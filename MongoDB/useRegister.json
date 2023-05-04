@@ -1,0 +1,42 @@
+[
+  {
+    "idUtilizador": 1,
+    "idEcoponto": 2,
+    "dataUtilizacao": { "$date": "25-01-2023" },
+    "foto": "https://picsum.photos/200/300",
+    "dataCriacao": { "$date": "25-01-2023" },
+    "validacao": false
+  },
+  {
+    "idUtilizador": 2,
+    "idEcoponto": 3,
+    "dataUtilizacao": { "$date": "25-01-2023" },
+    "photo": "https://picsum.photos/200/300",
+    "dataCriacao": { "$date": "25-01-2023" },
+    "validacao": false
+  },
+  {
+    "idUtilizador": 3,
+    "idEcoponto": 4,
+    "dataUtilizacao": { "$date": "25-01-2023" },
+    "photo": "https://picsum.photos/200/300",
+    "dataCriacao": { "$date": "25-01-2023" },
+    "validacao": false
+  },
+  {
+    "idUtilizador": 4,
+    "idEcoponto": 5,
+    "dataUtilizacao": { "$date": "25-01-2023" },
+    "foto": "https://picsum.fotos/200/300",
+    "dataCriacao": { "$date": "25-01-2023" },
+    "validacao": false
+  },
+  {
+    "idUtilizador": 5,
+    "idEcoponto": 6,
+    "dataUtilizacao": { "$date": "25-01-2023" },
+    "foto": "https://picsum.fotos/200/300",
+    "dataCriacao": { "$date": "25-01-2023" },
+    "validacao": true
+  }
+]

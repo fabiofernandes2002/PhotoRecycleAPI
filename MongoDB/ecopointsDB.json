@@ -1,0 +1,62 @@
+[
+  {
+    "nome": "Ecoponto Azul",
+    "criador": { "$numberInt": "1" },
+    "localizacao": "Vila Nova de Gaia",
+    "morada": "Avenida da Republica",
+    "dataCriacao": { "$date": "2021-01-01" },
+    "estado": "ativo",
+    "tipo": "Papel",
+    "latitude": { "$numberDouble": "41.133333" },
+    "longitude": { "$numberDouble": "-8.616667" },
+    "validacao": false
+  },
+  {
+    "nome": "Ecoponto Verde",
+    "criador": { "$numberInt": "2" },
+    "localizacao": "Vila Nova de Gaia",
+    "morada": "Avenida da Republica",
+    "dataCriacao": { "$date": "2021-01-01" },
+    "estado": "ativo",
+    "tipo": "Vidro",
+    "latitude": { "$numberDouble": "41.362774699560454" },
+    "longitude": { "$numberDouble": "-8.740214109420776" },
+    "validacao": false
+  },
+  {
+    "nome": "Ecoponto Amarelo",
+    "criador": { "$numberInt": "3" },
+    "localizacao": "Vila Nova de Gaia",
+    "morada": "Avenida da Republica",
+    "dataCriacao": { "$date": "2021-01-01" },
+    "estado": "ativo",
+    "tipo": "Plastico",
+    "latitude": { "$numberDouble": "41.31776" },
+    "longitude": { "$numberDouble": "-8.67931" },
+    "validacao": false
+  },
+  {
+    "nome": "Ecoponto Castanho",
+    "criador": { "$numberInt": "4" },
+    "localizacao": "Vila Nova de Gaia",
+    "morada": "Avenida da Republica",
+    "dataCriacao": { "$date": "2021-01-01" },
+    "estado": "ativo",
+    "tipo": "Organico",
+    "latitude": { "$numberDouble": "41.36581039362086" },
+    "longitude": { "$numberDouble": "-8.74010682106018" },
+    "validacao": false
+  },
+  {
+    "nome": "Ecoponto Vermelho",
+    "criador": { "$numberInt": "5" },
+    "localizacao": "Vila Nova de Gaia",
+    "morada": "Avenida da Republica",
+    "dataCriacao": { "$date": "2021-01-01" },
+    "estado": "ativo",
+    "tipo": "Pilhas",
+    "latitude": { "$numberDouble": "41.35173" },
+    "longitude": { "$numberDouble": "-8.747862" },
+    "validacao": true
+  }
+]
