@@ -15,7 +15,8 @@ app.get('/', function (req, res) {
 
 
 // routing middleware for resource TUTORIALS
-app.use('/tutorials', require('./routes/tutorials.routes.js'))
+app.use('/users', require('./routes/utilizadores.routes.js'))
+app.use('/ecopoints', require('./routes/ecopoints.routes.js'))
 //app.use('/tags', require('./routes/tags.routes.js'))
 
 // handle invalid routes

@@ -1,5 +1,6 @@
 const express = require('express');
 let router = express.Router();
+const ecopontosController = require('../controllers/ecopontos.controller');
 
 router.use((req, res, next) => {
     const start = Date.now();
@@ -8,6 +9,17 @@ router.use((req, res, next) => {
         console.log(`${req.method} ${req.originalUrl} completed in ${diffSeconds} seconds`);
     });
     next()
+})
+
+router.route('/')
+    .get(ecopontosController.findAll)
+    .post(ecopontosController.create);
+
+router.route('/:ecopontoID')
+    .get(ecopontosController.findOne);
+
+router.all('*', function (req, res) {
+    res.status(404).json({ message: 'What???' });
 })
 
 module.exports = router;

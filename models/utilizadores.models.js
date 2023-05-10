@@ -20,6 +20,6 @@ module.exports = (mongoose) => {
         },
         { timestamps: false }
     );
-    const Utilizador = mongoose.model("tutorial", utilizadores);
+    const Utilizador = mongoose.model("user", utilizadores);
     return Utilizador;
 };

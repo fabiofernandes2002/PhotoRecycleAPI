@@ -12,6 +12,11 @@ db.mongoose.connect(db.url, {
     console.log("Cannot connect to the database!", err);
     process.exit();
 });
-db.tutorials = require("./ecopontos.model.js")(mongoose);
-db.comments = require("./utilizadores.model.js")(mongoose);
+db.users = require("./utilizadores.model.js")(mongoose);
+db.desafios = require("./desafios.model.js")(mongoose);
+db.ecopontos = require("./ecopontos.model.js")(mongoose);
+db.pontos = require("./pontos.model.js")(mongoose);
+db.registo = require("./registo.model.js")(mongoose);
+db.autenticacao = require("./autenticacao.model.js")(mongoose);
+db.mongoose = require("./mongoose.model.js")(mongoose);
 module.exports = db;
