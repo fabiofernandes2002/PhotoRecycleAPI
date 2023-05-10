@@ -6,4 +6,7 @@ const config = {
     DB: process.env.DB_NAME || 'tutorialsDB'
 };
 config.URL = `mongodb+srv://${config.USER}:${config.PASSWORD}@cluster1.ltnlqoc.mongodb.net/${config.DB}?retryWrites=true&w=majority`;
-module.exports = config;
+module.exports = {
+    config,
+    SECRET: process.env.SECRET
+}
