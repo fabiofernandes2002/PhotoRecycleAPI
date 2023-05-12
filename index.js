@@ -8,21 +8,20 @@ app.use(cors()); //enable ALL CORS requests (client requests from other domain)
 app.use(express.json()); //enable parsing JSON body data
 // root route -- /api/
 app.get('/', function (req, res) {
-    res.status(200).json({
-        message: 'HOME -- PHOTORECYCLE API'
-    });
+  res.status(200).json({
+    message: 'HOME -- PHOTORECYCLE API',
+  });
 });
 
-
 // routing middleware for resource TUTORIALS
-app.use('/users', require('./routes/utilizadores.routes.js'))
-app.use('/ecopoints', require('./routes/ecopoints.routes.js'))
+app.use('/users', require('./routes/utilizadores.routes.js'));
+app.use('/ecopoints', require('./routes/ecopontos.routes.js'));
 //app.use('/tags', require('./routes/tags.routes.js'))
 
 // handle invalid routes
 app.get('*', function (req, res) {
-    res.status(404).json({
-        message: 'WHAT???'
-    });
-})
+  res.status(404).json({
+    message: 'WHAT???',
+  });
+});
 app.listen(port, host, () => console.log(`App listening at http://${host}:${port}/`));

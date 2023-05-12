@@ -1,8 +1,10 @@
 module.exports = (mongoose) => {
-  const utilizadores = mongoose.Utilizadores(
+  const { Schema } = mongoose;
+
+  const UtilizadorSchema = new Schema(
     {
       username: { type: String, required: true },
-      tipo: { type: String, deafult: 'user' },
+      tipo: { type: String, default: 'user' },
       email: { type: String, required: true, unique: true },
       datanascimento: { type: Date, required: true },
       password: { type: String, required: true },
@@ -20,6 +22,7 @@ module.exports = (mongoose) => {
     },
     { timestamps: false }
   );
-  const Utilizador = mongoose.model('user', utilizadores);
+
+  const Utilizador = mongoose.model('Utilizador', UtilizadorSchema);
   return Utilizador;
 };

@@ -1,5 +1,5 @@
-const db = require("../models");
-const User = db.Users;
+const db = require('../models');
+const User = db.users;
 /* exports.create = async (req, res) => {
     const user = new User({ 
         username: req.body.username,
@@ -37,31 +37,31 @@ const User = db.Users;
  */
 
 exports.editProfile = async (req, res) => {
-    if (!req.body || !req.body.username) { // validate request body data
-        res.status(400).json({ message: "Request body can not be empty!" });
-        return;
-    }
-    try {
-        const username = await User.findByIdAndUpdate(req.params.username, req.body, {
-            useFindAndModify: false
-        }).exec();
-        const email = await User.findByIdAndUpdate(req.params.email, req.body, {
-            useFindAndModify: false
-        }).exec();
+  if (!req.body || !req.body.username) {
+    // validate request body data
+    res.status(400).json({ message: 'Request body can not be empty!' });
+    return;
+  }
+  try {
+    const username = await User.findByIdAndUpdate(req.params.username, req.body, {
+      useFindAndModify: false,
+    }).exec();
+    const email = await User.findByIdAndUpdate(req.params.email, req.body, {
+      useFindAndModify: false,
+    }).exec();
 
-        if (!username || !email) // returns the found document (if any) to the callback
-            res.status(400).json({
-                message: `Username ou email já existem!`
-            });
-        else
-            res.status(200).json({
-                message: `Dados atualizados com sucesso!`
-            });
-    } catch (err) {
-        res.status(500).json({
-            message: `Algo deu errado. Por favor, tente novamente mais tarde.`
-        });
-    };
+    if (!username || !email)
+      // returns the found document (if any) to the callback
+      res.status(400).json({
+        message: `Username ou email já existem!`,
+      });
+    else
+      res.status(200).json({
+        message: `Dados atualizados com sucesso!`,
+      });
+  } catch (err) {
+    res.status(500).json({
+      message: `Algo deu errado. Por favor, tente novamente mais tarde.`,
+    });
+  }
 };
-
-
