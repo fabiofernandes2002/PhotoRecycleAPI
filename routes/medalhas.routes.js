@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const desafiosController = require('../controllers/desafios.controller.js');
+const medalhasController = require('../controllers/medalhas.controller.js');
 
 router.use((req, res, next) => {
     const start = Date.now();
@@ -10,26 +10,23 @@ router.use((req, res, next) => {
         console.log(`${req.method} ${req.originalUrl} completed in ${diffSeconds} seconds`);
     });
     next()
-})
+}
+)
 
 router.route('/')
-    .get(desafiosController.findAllDesafios)
-    .post(desafiosController.createDesafio);
+    .get(medalhasController.findAllMedalhas)
+    .post(medalhasController.createMedalha);
 
-router.route('/:idDesafio')
-    .get(desafiosController.findOneDesafio)
-    .put(desafiosController.updateDesafio)
-    .delete(desafiosController.deleteDesafio);
-
-
-// find desafios by estado
-router.route('/estado/:estado')
-    .get(desafiosController.findDesafioByEstado);
+router.route('/:idMedalha')
+    .get(medalhasController.findOneMedalha)
+    .put(medalhasController.updateMedalha)
+    .delete(medalhasController.deleteMedalha);
 
 router.all('*', function (req, res) {
     res.status(404).json({
-        message: 'DESAFIOS: what???'
+        message: 'MEDALHAS: what???'
     });
-})
-// EXPORT ROUTES (required by APP)
+}
+)
+
 module.exports = router;

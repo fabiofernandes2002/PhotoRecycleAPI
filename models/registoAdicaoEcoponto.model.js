@@ -12,21 +12,28 @@ const urlValidator = [
 
 module.exports = (mongoose) => {
     const schema = mongoose.Schema({
+        foto: {
+            type: String,
+            validate: urlValidator,
+        },
         idUtilizador: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "utilizador",
         },
-        idEcoponto: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "ecoponto",
-        },
-        dataUtilizacao: {
-            type: Date,
-            default: Date.now(),
-        },
-        foto: {
+        morada: {
             type: String,
-            validate: urlValidator,
+            required: [true, "O campo morada é obrigatório!"],
+        },
+        codigoPostal: {
+            type: String,
+            required: [true, "O campo código postal é obrigatório!"],
+        },
+        descricao: {
+            type: String,
+            required: [true, "O campo descrição é obrigatório!"],
+        },
+        comentario: {
+            type: String,
         },
         dataCriacao: {
             type: Date,
@@ -39,6 +46,6 @@ module.exports = (mongoose) => {
     }, {
         timestamps: false
     });
-    const RegistoUtilizacao = mongoose.model("registoUtilizacao", schema);
-    return RegistoUtilizacao;
+    const AdicaoEcoponto = mongoose.model("adicaoEcoponto", schema);
+    return AdicaoEcoponto;
 };

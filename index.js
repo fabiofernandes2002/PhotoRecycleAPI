@@ -14,9 +14,11 @@ app.get('/', function (req, res) {
 });
 
 
-// routing middleware for resource TUTORIALS
-app.use('/tutorials', require('./routes/tutorials.routes.js'))
-//app.use('/tags', require('./routes/tags.routes.js'))
+// routing middleware for resource PHOTORECYCLE API
+app.use('/desafios', require('./routes/desafios.routes.js'))
+app.use('/registoUtilizacao', require('./routes/registoUtilizacoes.routes.js'))
+app.use('/medalhas', require('./routes/medalhas.routes.js'))
+app.use('/adicaoEcoponto', require('./routes/registoAdicaoEcoponto.routes.js'))
 
 // handle invalid routes
 app.get('*', function (req, res) {
