@@ -51,6 +51,6 @@ module.exports = (mongoose) => {
     }, {
         timestamps: false
     });
-    const RegistoAdicaoEcoponto = mongoose.model("registoAdicaoEcoponto", schema);
-    return RegistoAdicaoEcoponto;
+    const AdicaoEcoponto = mongoose.model("adicaoEcoponto", schema);
+    return AdicaoEcoponto;
 };

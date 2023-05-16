@@ -1,0 +1,17 @@
+[
+    {
+        "nomeMeddalha": "Medalha de Ouro",
+        "pontos": 100,
+        "urlMedalha": "../src/assets/imgs/medal_1.png"
+    },
+    {
+        "nomeMeddalha": "Medalha de Prata",
+        "pontos": 50,
+        "urlMedalha": "../src/assets/imgs/medal_2.png"
+    },
+    {
+        "nomeMeddalha": "Medalha de Bronze",
+        "pontos": 25,
+        "urlMedalha": "../src/assets/imgs/medal_3.png"
+    }
+]

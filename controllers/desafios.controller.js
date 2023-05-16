@@ -159,7 +159,7 @@ exports.deleteDesafio = async (req, res) => {
 };
 
 // find desafio by estado
-exports.findDesafioByEstado = async (req, res) => {
+/* exports.findDesafioByEstado = async (req, res) => {
     try {
         const desafios = await Desafio.find({
             estado: req.params.estado
@@ -180,4 +180,4 @@ exports.findDesafioByEstado = async (req, res) => {
             msg: `Erro ao obter os desafios!`
         });
     }
-}
+} */

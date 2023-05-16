@@ -21,9 +21,8 @@ router.route('/login')
 
 router.route('/:id')
     .get(authController.verifyToken, utilizadoresController.getUser)
-
-router.route('/profile/:id')
-    .patch(utilizadoresController.editProfile);
+    .patch(authController.verifyToken, utilizadoresController.editProfile)
+    .delete(authController.verifyToken, utilizadoresController.deleteUser);
 
 
 router.all('*', function (req, res) {

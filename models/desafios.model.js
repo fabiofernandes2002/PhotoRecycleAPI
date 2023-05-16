@@ -20,7 +20,7 @@ module.exports = (mongoose) => {
             type: String,
             required: [true, "O campo recompensa é obrigatório!"],
         },
-        // estado do desafio (0 - não iniciado, 1 - em andamento, 2 - finalizado)
+        /* // estado do desafio (0 - não iniciado, 1 - em andamento, 2 - finalizado)
         estado: {
             type: Number,
             enum: [0, 1, 2],
@@ -31,15 +31,10 @@ module.exports = (mongoose) => {
                 },
                 message: "O estado do desafio deve ser 0, 1 ou 2!",
             },
-        },
-        // pontuação do desafio
-        pontuacao: {
-            type: Number,
-            required: [true, "O campo pontuação é obrigatório!"],
-        },
+        }, */
     }, {
         timestamps: false
     });
-    const Desafio = mongoose.model("desafio", schema);
+    const Desafio = mongoose.model("desafios", schema);
     return Desafio;
 };

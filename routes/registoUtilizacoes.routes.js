@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const registoUtilizacaoController = require('../controllers/registoUtilizacao.controller.js');
+const authController = require('../controllers/auth.controller');
 
 router.use((req, res, next) => {
     const start = Date.now();
@@ -14,21 +15,21 @@ router.use((req, res, next) => {
 )
 
 router.route('/')
-    .get(registoUtilizacaoController.findAllRegistoUtilizacoes)
-    .post(registoUtilizacaoController.createRegistoUtilizacao);
+    .get(authController.verifyToken, registoUtilizacaoController.findAllRegistoUtilizacoes)
+    //.post(authController.verifyToken, registoUtilizacaoController.createRegistoUtilizacao);
 
 // all registoUtilizacao is validation = true
 router.route('/validados')
-    .get(registoUtilizacaoController.findAllRegistoUtilizacoesValidados);
+    .get(authController.verifyToken, registoUtilizacaoController.findAllRegistoUtilizacoesValidados);
 
 // all registoUtilizacao is validation = false
 router.route('/naoValidados')
-    .get(registoUtilizacaoController.findAllRegistoUtilizacoesNaoValidados);
+    .get(authController.verifyToken, registoUtilizacaoController.findAllRegistoUtilizacoesNaoValidados);
 
 router.route('/:idRegistoUtilizacao')
-    .get(registoUtilizacaoController.findOneRegistoUtilizacao)
-    .put(registoUtilizacaoController.updateRegistoUtilizacao)
-    .delete(registoUtilizacaoController.deleteRegistoUtilizacao);
+    .get(authController.verifyToken, registoUtilizacaoController.findOneRegistoUtilizacao)
+    //.put(authController.verifyToken, registoUtilizacaoController.updateRegistoUtilizacao)
+    .delete(authController.verifyToken, registoUtilizacaoController.deleteRegistoUtilizacao);
 
 // validadr a utilização de um ecoponto por admin quando estiver logado passando a validação para true
 router.route('/validar/:idRegistoUtilizacao')

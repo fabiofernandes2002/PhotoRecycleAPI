@@ -1,14 +1,13 @@
 const db = require("../models");
-const AdicaoEcoponto = db.adicaoEcoponto;
+const AdicaoEcoponto = db.registoadicaoecoponto;
 
 // Create and Save a new AdicaoEcoponto
-exports.createAdicaoEcoponto = async (req, res) => {
+/* exports.createRegistoAdicaoEcoponto = async (req, res) => {
     const adicaoEcoponto = new AdicaoEcoponto({
         foto: req.body.foto,
         idUtilizador: req.body.idUtilizador,
         localizacao: req.body.localizacao,
         morada: req.body.morada,
-        estado: req.body.estado,
         tipo: req.body.tipo,
         latitude: req.body.latitude,
         longitude: req.body.longitude,
@@ -39,10 +38,10 @@ exports.createAdicaoEcoponto = async (req, res) => {
             msg: err.message || 'Algo deu errado. Por favor, tente novamente mais tarde. ',
         });
     }
-}
+} */
 
 // Retrieve all AdicaoEcopontos from the database.
-exports.findAllAdicaoEcopontos = async (req, res) => {
+exports.findAllRegistoAdicaoEcopontos = async (req, res) => {
     const idUtilizador = req.query.idUtilizador;
     const condition = idUtilizador ? {
         idUtilizador: {
@@ -52,7 +51,7 @@ exports.findAllAdicaoEcopontos = async (req, res) => {
 
     try {
         const data = await AdicaoEcoponto.find(condition).
-        select('foto idUtilizador morada codigoPostal descricao comentario dataCriacao validacao').
+        select('foto criador localizacao morada tipo latitude longitude dataCriacao validacao').
         exec();
         res.status(200).json({
             success: true,
@@ -67,12 +66,12 @@ exports.findAllAdicaoEcopontos = async (req, res) => {
 }
 
 // Find a single AdicaoEcoponto with an id
-exports.findOneAdicaoEcoponto = async (req, res) => {
+exports.findOneRegistoAdicaoEcoponto = async (req, res) => {
     const idAdicaoEcoponto = req.params.idAdicaoEcoponto;
 
     try {
         const data = await AdicaoEcoponto.findById(idAdicaoEcoponto).
-        select('foto idUtilizador morada codigoPostal descricao comentario dataCriacao validacao').
+        select('foto idUtilizador localizacao morada tipo latitude longitude dataCriacao validacao').
         exec();
         if (!data)
             res.status(404).json({
@@ -92,7 +91,7 @@ exports.findOneAdicaoEcoponto = async (req, res) => {
 }
 
 // delete a AdicaoEcoponto with the specified id in the request
-exports.deleteAdicaoEcoponto = async (req, res) => {
+exports.deleteRegistoAdicaoEcoponto = async (req, res) => {
     const idAdicaoEcoponto = req.params.idAdicaoEcoponto;
 
     try {
@@ -115,7 +114,7 @@ exports.deleteAdicaoEcoponto = async (req, res) => {
 }
 
 // fazer a validação de um ecoponto adicionado por um utilizador passando a validacao para true
-exports.validarAdicaoEcoponto = async (req, res) => {
+exports.validarRegistoAdicaoEcoponto = async (req, res) => {
     const idAdicaoEcoponto = req.params.idAdicaoEcoponto;
 
     try {

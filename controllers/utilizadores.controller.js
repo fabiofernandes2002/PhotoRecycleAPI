@@ -268,3 +268,34 @@ exports.editProfile = async (req, res) => {
     });
   }
 };
+
+exports.deleteUser = async (req, res) => {
+  try {
+    if (req.loggedUserId !== req.params.id && req.loggedUserType != 'admin') {
+      return res.status(403).json({
+        success: false,
+        msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
+      });
+    }
+
+    // Buscar o usuário pelo ID com atributos selecionados
+    const user = await User.findByIdAndDelete(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        msg: `Utilizador com ID ${req.params.id} não encontrado!`,
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      msg: `Utilizador ${user.username} eliminado com sucesso!`,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      msg: err.message || `Algo deu errado. Por favor, tente novamente mais tarde.`,
+    });
+  }
+}

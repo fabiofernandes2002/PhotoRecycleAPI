@@ -14,15 +14,15 @@ router.use((req, res, next) => {
 )
 
 router.route('/')
-    .get(registoAdicaoEcopontoController.findAllAdicaoEcopontos)
-    .post(registoAdicaoEcopontoController.createAdicaoEcoponto);
+    .get(registoAdicaoEcopontoController.findAllRegistoAdicaoEcopontos)
+    //.post(registoAdicaoEcopontoController.createRegistoAdicaoEcoponto);
 
 router.route('/:idAdicaoEcoponto')
-    .get(registoAdicaoEcopontoController.findOneAdicaoEcoponto)
-    .delete(registoAdicaoEcopontoController.deleteAdicaoEcoponto);
+    .get(registoAdicaoEcopontoController.findOneRegistoAdicaoEcoponto)
+    .delete(registoAdicaoEcopontoController.deleteRegistoAdicaoEcoponto);
 
 router.route('/validar/:idAdicaoEcoponto')
-    .put(registoAdicaoEcopontoController.validarAdicaoEcoponto);
+    .put(registoAdicaoEcopontoController.validarRegistoAdicaoEcoponto);
 
 router.all('*', function (req, res) {
     res.status(404).json({

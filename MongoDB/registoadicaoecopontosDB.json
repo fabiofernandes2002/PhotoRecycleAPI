@@ -1,0 +1,15 @@
+[
+    {
+        "nome": "Ecoponto Pilhão",
+        "criador": { "$numberInt": "1" },
+        "foto": "https://www.cm-gaia.pt/uploads/writer_file/document/1077/IMG_20191218_111724.jpg",
+        "localizacao": "Vila Nova de Gaia",
+        "morada": "Avenida da Republica",
+        "dataCriacao": { "$date": "2021-01-01" },
+        "tipo": "Papel",
+        "latitude": { "$numberDouble": "41.133333" },
+        "longitude": { "$numberDouble": "-8.616667" },
+        "validacao": true
+
+    }
+]

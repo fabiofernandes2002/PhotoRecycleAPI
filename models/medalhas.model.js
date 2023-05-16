@@ -28,6 +28,6 @@ module.exports = (mongoose) => {
     }, {
         timestamps: false
     });
-    const Medalha = mongoose.model("medalha", schema);
+    const Medalha = mongoose.model("medalhas", schema);
     return Medalha;
 };

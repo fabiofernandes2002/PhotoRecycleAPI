@@ -1,8 +1,8 @@
 const db = require("../models");
-const RegistoUtilizacao = db.registoUtilizacao;
+const RegistoUtilizacao = db.registoutilizacaos;
 
 // Create and Save a new RegistoUtilizacao
-exports.createRegistoUtilizacao = async (req, res) => {
+/* exports.createRegistoUtilizacao = async (req, res) => {
     const registoUtilizacao = new RegistoUtilizacao({
         idUtilizador: req.body.idUtilizador,
         idEcoponto: req.body.idEcoponto,
@@ -35,7 +35,7 @@ exports.createRegistoUtilizacao = async (req, res) => {
             msg: err.message || 'Algo deu errado. Por favor, tente novamente mais tarde. ',
         });
     }
-}
+} */
 
 // Retrieve all RegistoUtilizacaos from the database.
 exports.findAllRegistoUtilizacoes = async (req, res) => {
@@ -48,6 +48,12 @@ exports.findAllRegistoUtilizacoes = async (req, res) => {
     } : {};
 
     try {
+        if (req.loggedUserType != 'admin') {
+            return res.status(403).json({
+                success: false,
+                msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
+            });
+        }
         const data = await RegistoUtilizacao.find(condition).
         select('idUtilizador idEcoponto dataUtilizacao foto validacao').
         exec();
@@ -68,6 +74,12 @@ exports.findOneRegistoUtilizacao = async (req, res) => {
     const idRegistoUtilizacao = req.params.idRegistoUtilizacao;
 
     try {
+        if (req.loggedUserType != 'admin') {
+            return res.status(403).json({
+                success: false,
+                msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
+            });
+        }
         const data = await RegistoUtilizacao.findById(idRegistoUtilizacao).
         select('idUtilizador idEcoponto dataUtilizacao foto validacao').
         exec();
@@ -89,12 +101,19 @@ exports.findOneRegistoUtilizacao = async (req, res) => {
 }
 
 // Update a RegistoUtilizacao by the id in the request
-exports.updateRegistoUtilizacao = async (req, res) => {
+/* exports.updateRegistoUtilizacao = async (req, res) => {
    
     const idRegistoUtilizacao = req.params.idRegistoUtilizacao;
     const registoUtilizacao = req.body;
 
     try {
+        if (req.loggedUserType != 'admin') {
+            return res.status(403).json({
+                success: false,
+                msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
+            });
+        }
+
         const data = await RegistoUtilizacao.findByIdAndUpdate(idRegistoUtilizacao, registoUtilizacao, {
             new: true,
             runValidators: true
@@ -126,13 +145,20 @@ exports.updateRegistoUtilizacao = async (req, res) => {
             msg: err.message || 'Algo deu errado. Por favor, tente novamente mais tarde. ',
         });
     }
-}
+} */
 
 // Delete a RegistoUtilizacao with the specified id in the request
 exports.deleteRegistoUtilizacao = async (req, res) => {
     const idRegistoUtilizacao = req.params.idRegistoUtilizacao;
 
     try {
+        if (req.loggedUserType != 'admin') {
+            return res.status(403).json({
+                success: false,
+                msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
+            });
+        }
+
         const data = await RegistoUtilizacao.findByIdAndRemove(idRegistoUtilizacao);
         if (!data)
             return res.status(404).json({
@@ -155,6 +181,13 @@ exports.deleteRegistoUtilizacao = async (req, res) => {
 // list all registoUtilizacoes from the database is validation == true.
 exports.findAllRegistoUtilizacoesValidados = async (req, res) => {
     try {
+        if (req.loggedUserType != 'admin') {
+            return res.status(403).json({
+                success: false,
+                msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
+            });
+        }
+
         const data = await RegistoUtilizacao.find({
             validacao: true
         }).
@@ -175,6 +208,13 @@ exports.findAllRegistoUtilizacoesValidados = async (req, res) => {
 // list all registoUtilizacoes from the database is validation == false.
 exports.findAllRegistoUtilizacoesNaoValidados = async (req, res) => {
     try {
+        if (req.loggedUserType != 'admin') {
+            return res.status(403).json({
+                success: false,
+                msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
+            });
+        }
+
         const data = await RegistoUtilizacao.find({
             validacao: false
         }).
@@ -198,6 +238,13 @@ exports.validarRegistoUtilizacao = async (req, res) => {
     const registoUtilizacao = req.body;
 
     try {
+        if (req.loggedUserType != 'admin') {
+            return res.status(403).json({
+                success: false,
+                msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
+            });
+        }
+        
         const data = await RegistoUtilizacao.findByIdAndUpdate(idRegistoUtilizacao, registoUtilizacao, {
             new: true,
             runValidators: true

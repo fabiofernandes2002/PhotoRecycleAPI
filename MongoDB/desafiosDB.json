@@ -1,0 +1,27 @@
+[
+    {
+        "nome": "Desafio 1",
+        "descricao": "Os três utilizadores que tiveram mais pontos até 25 de Dezembro recebem packs caseiro para fazer a separação dos lixos",
+        "recompensa": "Pack caseiro para separação de lixos"
+    },
+    {
+        "nome": "Desafio 2",
+        "descricao": "Utilize dez ecopontos diferentes durante uma semana",
+        "recompensa": "50 posntos"
+    },
+    {
+        "nome": "Desafio 3",
+        "descricao": "Utilize a aplicação todos os dias durante um mês",
+        "recompensa": "Mestre da Reciclagem"
+    },
+    {
+        "nome": "Desafio 4",
+        "descricao": "Registe três novos ecopontos",
+        "recompensa": "Medalha Rei da Reciclagem"
+    },
+    {
+        "nome":"Desafio 5",
+        "descricao": "Utilize cinco ecopontos perto da sua localização",
+        "recompensa": "100 pontos"
+    }
+]

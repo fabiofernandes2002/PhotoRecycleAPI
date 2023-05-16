@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const desafiosController = require('../controllers/desafios.controller.js');
+const adicaoEcopontosController = require('../controllers/adicaoEcopontos.controller.js');
+const authController = require('../controllers/auth.controller');
 
 router.use((req, res, next) => {
     const start = Date.now();
@@ -13,22 +14,15 @@ router.use((req, res, next) => {
 })
 
 router.route('/')
-    .get(desafiosController.findAllDesafios)
-    .post(desafiosController.createDesafio);
+    .post(authController.verifyToken, adicaoEcopontosController.createAdicaoEcoponto)
 
-router.route('/:idDesafio')
-    .get(desafiosController.findOneDesafio)
-    .put(desafiosController.updateDesafio)
-    .delete(desafiosController.deleteDesafio);
+router.route('/validar/:idRegistoAdicaoEcoponto')
+    .put(authController.verifyToken, adicaoEcopontosController.validarRegistoAdicaoEcoponto)
 
-
-// find desafios by estado
-/* router.route('/estado/:estado')
-    .get(desafiosController.findDesafioByEstado); */
 
 router.all('*', function (req, res) {
     res.status(404).json({
-        message: 'DESAFIOS: what???'
+        message: 'ADICAO ECOPONTO: what???'
     });
 })
 // EXPORT ROUTES (required by APP)
