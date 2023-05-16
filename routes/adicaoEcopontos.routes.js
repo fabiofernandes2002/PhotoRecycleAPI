@@ -15,6 +15,7 @@ router.use((req, res, next) => {
 
 router.route('/')
     .post(authController.verifyToken, adicaoEcopontosController.createAdicaoEcoponto)
+    .get(authController.verifyToken, adicaoEcopontosController.findAllRegistoAdicaoEcopontos)
 
 router.route('/validar/:idRegistoAdicaoEcoponto')
     .put(authController.verifyToken, adicaoEcopontosController.validarRegistoAdicaoEcoponto)

@@ -1,5 +1,6 @@
 const db = require('../models');
 const Ecopoint = db.ecopontos;
+const RegistoUtilizacao = db.registoutilizacaos;
 
 exports.findAll = async (req, res) => {
   const tipo = req.query.tipo;
@@ -50,6 +51,18 @@ exports.useEcopoint = async (req, res) => {
 
     const ecopoint = await Ecopoint.findById(ecopointID).exec();
 
+    // usar registo de utilização para guardar o idUtilizador, idEcoponto, dataUtilizacao, foto, validacao
+    const registoUtilizacao = new RegistoUtilizacao({
+      idUtilizador: req.loggedUserID,
+      idEcoponto: ecopointID,
+      dataUtilizacao: Date.now(),
+      foto: req.body.foto,
+      validacao: false,
+    });
+
+    // save the registoUtilizacao in the database
+    await registoUtilizacao.save();
+
     if (!ecopoint) {
       return res.status(404).json({
         success: false,
@@ -60,6 +73,7 @@ exports.useEcopoint = async (req, res) => {
       success: true,
       ecoponto: ecopoint,
       /* falta adicionar a utilização do ecoponto pelo utilizador */
+      msg: `O ecoponto com o ID: ${ecopointID} foi utilizado com sucesso.`,
     });
   } catch (err) {
     res.status(500).json({

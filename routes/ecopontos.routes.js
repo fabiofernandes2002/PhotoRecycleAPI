@@ -1,6 +1,7 @@
 const express = require('express');
 let router = express.Router();
 const ecopontosController = require('../controllers/ecopontos.controller');
+const authController = require('../controllers/auth.controller');
 
 router.use((req, res, next) => {
   const start = Date.now();
@@ -16,9 +17,9 @@ router.route('/').get(ecopontosController.findAll);
 
 /* .post(ecopontosController.create); */
 
-router.route('/:ecopontoID').get(ecopontosController.findOne);
+router.route('/:ecopointID').get(ecopontosController.findOne);
 
-router.route('/:ecopontoID/use').post(ecopontosController.useEcopoint);
+router.route('/:ecopointID/use').post(authController.verifyToken, ecopontosController.useEcopoint);
 
 /* router.route('/:ecopontoID/validate').post(ecopontosController.validateEcopoint); */
 
