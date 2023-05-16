@@ -8,7 +8,9 @@ exports.findAll = async (req, res) => {
   try {
     // find function parameters: filter, projection (select) / returns a list of documents
     let data = await Ecopoint.find(condition)
-      .select('title description published') // select the fields: do not show versionKey field
+      .select(
+        'nome criador localizacao morada dataCriacao estado tipo latitude longitude valicacao'
+      ) // select the fields: do not show versionKey field
       .exec(); // execute the query
     res.status(200).json({ success: true, ecopoints: data });
   } catch (err) {

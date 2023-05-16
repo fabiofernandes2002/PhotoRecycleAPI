@@ -16,6 +16,6 @@ module.exports = (mongoose) => {
     { timestamps: false }
   );
 
-  const Ecoponto = mongoose.model('Ecoponto', EcopontoSchema);
+  const Ecoponto = mongoose.model('ecopontos', EcopontoSchema);
   return Ecoponto;
 };
