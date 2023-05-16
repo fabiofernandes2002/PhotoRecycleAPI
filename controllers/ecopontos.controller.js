@@ -42,3 +42,58 @@ exports.findOne = async (req, res) => {
     });
   }
 };
+
+// Function to use the Ecopoint model
+exports.useEcopoint = async (req, res) => {
+  try {
+    const ecopointID = req.params.ecopointID;
+
+    const ecopoint = await Ecopoint.findById(ecopointID).exec();
+
+    if (!ecopoint) {
+      return res.status(404).json({
+        success: false,
+        msg: `Não foi possível encontrar o ecoponto com o ID: ${ecopointID}.`,
+      });
+    }
+    res.status(200).json({
+      success: true,
+      ecoponto: ecopoint,
+      /* falta adicionar a utilização do ecoponto pelo utilizador */
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      msg: 'Algo deu errado. Por favor, tente novamente mais tarde.',
+    });
+  }
+};
+
+exports.delete = async (req, res) => {
+  try {
+    if (req.loggedUserType != 'admin') {
+      return res.status(403).json({
+        success: false,
+        msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
+      });
+    }
+
+    const ecopointID = req.params.ecopointID;
+    const ecopoint = await Ecopoint.findById(ecopointID).exec();
+
+    if (ecopoint === null)
+      return res.status(404).json({
+        success: false,
+        msg: `Não foi possível encontrar o ecoponto com o ID: ${req.params.ecopointID}.`,
+      });
+    res.status(200).json({
+      success: true,
+      msg: `Ecoponto com o ID: ${req.params.ecopointID} foi eliminado com sucesso.`,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      msg: 'Algo deu errado. Por favor, tente novamente mais tarde.',
+    });
+  }
+};
