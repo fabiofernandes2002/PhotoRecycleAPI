@@ -19,10 +19,8 @@ app.use('/desafios', require('./routes/desafios.routes.js'))
 app.use('/registoUtilizacao', require('./routes/registoUtilizacoes.routes.js'))
 app.use('/medalhas', require('./routes/medalhas.routes.js'))
 app.use('/adicaoEcoponto', require('./routes/registoAdicaoEcoponto.routes.js'))
-// routing middleware for resource TUTORIALS
 app.use('/users', require('./routes/utilizadores.routes.js'));
 app.use('/ecopoints', require('./routes/ecopontos.routes.js'));
-//app.use('/tags', require('./routes/tags.routes.js'))
 
 // handle invalid routes
 app.get('*', function (req, res) {

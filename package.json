@@ -18,10 +18,12 @@
   },
   "homepage": "https://github.com/LucasSilva194/PhotoRecycleAPI#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.1.0",
-    "mongoose-validator": "^1.3.1"
+    "mongoose-validator": "^1.3.2"
   }
 }

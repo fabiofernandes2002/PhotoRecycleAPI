@@ -6,10 +6,12 @@ exports.createAdicaoEcoponto = async (req, res) => {
     const adicaoEcoponto = new AdicaoEcoponto({
         foto: req.body.foto,
         idUtilizador: req.body.idUtilizador,
+        localizacao: req.body.localizacao,
         morada: req.body.morada,
-        codigoPostal: req.body.codigoPostal,
-        descricao: req.body.descricao,
-        comentario: req.body.comentario,
+        estado: req.body.estado,
+        tipo: req.body.tipo,
+        latitude: req.body.latitude,
+        longitude: req.body.longitude,
         dataCriacao: req.body.dataCriacao,
         validacao: req.body.validacao,
     });

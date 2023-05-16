@@ -20,20 +20,29 @@ module.exports = (mongoose) => {
             type: mongoose.Schema.Types.ObjectId,
             ref: "utilizador",
         },
+        localizacao: {
+            type: String,
+            required: true
+        },
         morada: {
             type: String,
             required: [true, "O campo morada é obrigatório!"],
         },
-        codigoPostal: {
+        estado: {
             type: String,
-            required: [true, "O campo código postal é obrigatório!"],
+            required: true
         },
-        descricao: {
+        tipo: {
             type: String,
-            required: [true, "O campo descrição é obrigatório!"],
+            required: true
         },
-        comentario: {
+        latitude: {
             type: String,
+            required: true
+        },
+        longitude: {
+            type: String,
+            required: true
         },
         dataCriacao: {
             type: Date,

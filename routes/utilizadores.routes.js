@@ -1,6 +1,7 @@
 const express = require('express');
 let router = express.Router();
 const utilizadoresController = require('../controllers/utilizadores.controller');
+const authController = require('../controllers/auth.controller');
 
 router.use((req, res, next) => {
     const start = Date.now();
@@ -11,8 +12,19 @@ router.use((req, res, next) => {
     next()
 })
 
-router.route('/{username}')
+router.route('/')
+    .get(authController.verifyToken, utilizadoresController.getAllUsers)
+    .post(utilizadoresController.registo)
+
+router.route('/login')
+    .post(utilizadoresController.login)
+
+router.route('/:id')
+    .get(authController.verifyToken, utilizadoresController.getUser)
+
+router.route('/profile/:id')
     .patch(utilizadoresController.editProfile);
+
 
 router.all('*', function (req, res) {
     res.status(404).json({ message: 'What???' });
