@@ -14,13 +14,13 @@ db.mongoose
   .catch((err) => {
     console.log('Cannot connect to the database!', err);
     process.exit();
-});
+  });
 
-db.desafios = require("./desafios.model.js")(mongoose);
-db.registoUtilizacao = require("./registoUtilizacao.model.js")(mongoose);
-db.medalhas = require("./medalhas.model.js")(mongoose);
-db.adicaoEcoponto = require("./registoAdicaoEcoponto.model.js")(mongoose);
-db.utilizador = require('./utilizadores.model.js')(mongoose);
+db.desafios = require('./desafios.model.js')(mongoose);
+db.registoUtilizacao = require('./registoUtilizacao.model.js')(mongoose);
+db.medalhas = require('./medalhas.model.js')(mongoose);
+db.adicaoEcoponto = require('./registoAdicaoEcoponto.model.js')(mongoose);
+db.utilizadores = require('./utilizadores.model.js')(mongoose);
 db.ecopontos = require('./ecopontos.model.js')(mongoose);
 /* db.pontos = require('./pontos.model.js')(mongoose); */
 module.exports = db;
