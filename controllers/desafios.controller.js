@@ -25,6 +25,13 @@ exports.createDesafio = async (req, res) => {
     }
 
     try {
+        if (req.loggedUserType != 'admin') {
+            return res.status(403).json({
+                success: false,
+                msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
+            });
+        }
+
         await desafio.save();
         res.status(201).json({
             sucess: true,
@@ -59,14 +66,13 @@ exports.findAllDesafios = async (req, res) => {
 
     try {
         let data = await Desafio.find(condition)
-        .select('nome descricao dataInicio dataFim recompensa estado pontuacao')
-        .exec();
+            .select('nome descricao dataInicio dataFim recompensa estado pontuacao')
+            .exec();
         res.status(200).json({
             success: true,
             desafios: data
         });
-    }
-    catch (err) {
+    } catch (err) {
         res.status(500).send({
             success: false,
             msg: err.message || 'Algo deu errado. Por favor, tente novamente mais tarde.'
@@ -102,31 +108,38 @@ exports.findOneDesafio = async (req, res) => {
 
 // Update a Desafio by the id in the request
 exports.updateDesafio = async (req, res) => {
-    if(!req.body || !req.body.nome){
+    if (!req.body || !req.body.nome) {
         return res.status(400).json({
             success: false,
             msg: "Dados inválidos!"
         });
-        return; 
+        return;
     }
 
-    try{
+    try {
+
+        if (req.loggedUserType != 'admin') {
+            return res.status(403).json({
+                success: false,
+                msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
+            });
+        }
+
         const desafio = await Desafio.findByIdAndUpdate(req.params.idDesafio, req.body, {
             useFindAndModify: false
         }).exec();
-        if(desafio === null){
+        if (desafio === null) {
             return res.status(404).json({
                 success: false,
                 msg: `Desafio com o id ${req.params.idDesafio} não encontrado!`
             });
-        }
-        else{
+        } else {
             res.status(200).json({
                 success: true,
                 msg: `Desafio com o id ${req.params.idDesafio} atualizado com sucesso!`
             });
         }
-    } catch(err){
+    } catch (err) {
         res.status(500).json({
             success: false,
             msg: `Erro ao atualizar o desafio com o id ${req.params.idDesafio}!`
@@ -136,48 +149,30 @@ exports.updateDesafio = async (req, res) => {
 
 // Delete a Desafio with the specified id in the request
 exports.deleteDesafio = async (req, res) => {
-    try{
+    try {
+        if (req.loggedUserType != 'admin') {
+            return res.status(403).json({
+                success: false,
+                msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
+            });
+        }
+
         const desafio = await Desafio.findByIdAndRemove(req.params.idDesafio).exec();
-        if(desafio === null){
+        if (desafio === null) {
             return res.status(404).json({
                 success: false,
                 msg: `Desafio com o id ${req.params.idDesafio} não encontrado!`
             });
-        }
-        else{
+        } else {
             res.status(200).json({
                 success: true,
                 msg: `Desafio com o id ${req.params.idDesafio} eliminado com sucesso!`
             });
         }
-    } catch(err){
+    } catch (err) {
         res.status(500).json({
             success: false,
             msg: `Erro ao eliminar o desafio com o id ${req.params.idDesafio}!`
         });
     }
 };
-
-// find desafio by estado
-/* exports.findDesafioByEstado = async (req, res) => {
-    try {
-        const desafios = await Desafio.find({
-            estado: req.params.estado
-        }).exec();
-        if (desafios === null) {
-            return res.status(404).json({
-                success: false,
-                msg: `Desafios não encontrados!`,
-            });
-        }
-        res.status(200).json({
-            success: true,
-            desafios: desafios
-        });
-    } catch (err) {
-        res.status(500).send({
-            success: false,
-            msg: `Erro ao obter os desafios!`
-        });
-    }
-} */

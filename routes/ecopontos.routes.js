@@ -13,11 +13,11 @@ router.use((req, res, next) => {
   next();
 });
 
-router.route('/').get(ecopontosController.findAll);
+router.route('/').get(authController.verifyToken, ecopontosController.findAll);
 
 /* .post(ecopontosController.create); */
 
-router.route('/:ecopointID').get(ecopontosController.findOne);
+router.route('/:ecopointID').get(authController.verifyToken, ecopontosController.findOne);
 
 router.route('/:ecopointID/use').post(authController.verifyToken, ecopontosController.useEcopoint);
 
@@ -25,7 +25,7 @@ router.route('/:ecopointID/use').post(authController.verifyToken, ecopontosContr
 
 /* router.route('/:ecopontoID').put(ecopontosController.update); */
 
-router.route('/:ecopontoID').delete(ecopontosController.delete);
+router.route('/:ecopontoID').delete(authController.verifyToken, ecopontosController.delete);
 
 router.all('*', function (req, res) {
   res.status(404).json({ message: 'What???' });
