@@ -55,7 +55,7 @@ exports.findAllRegistoAdicaoEcopontos = async (req, res) => {
         exec();
         res.status(200).json({
             success: true,
-            adicaoEcopontos: data
+            registoAdicaoEcopontos: data
         });
     } catch (err) {
         res.status(500).json({
@@ -80,7 +80,7 @@ exports.findOneRegistoAdicaoEcoponto = async (req, res) => {
             });
         else res.status(200).json({
             success: true,
-            adicaoEcoponto: data
+            regsitoAdicaoEcoponto: data
         });
     } catch (err) {
         res.status(500).json({

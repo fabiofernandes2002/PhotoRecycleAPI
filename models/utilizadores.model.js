@@ -19,14 +19,7 @@ module.exports = (mongoose) => {
       },
       tipo: {
         type: String,
-        enum: ['admin', 'userNormal'],
         default: 'userNormal',
-        validate: {
-          validator: function (value) {
-            return ['admin', 'userNormal'].includes(value);
-          },
-          message: 'Tipo de utilizador inválido (admin ou userNormal)!',
-        },
       },
       email: {
         type: String,

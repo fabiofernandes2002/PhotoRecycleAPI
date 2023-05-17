@@ -62,7 +62,7 @@ exports.registo = async (req, res) => {
       morada: req.body.morada,
       localidade: req.body.localidade,
       codigopostal: req.body.codigopostal,
-      tipo: req.body.tipo,
+      tipo: req.body.tipo || 'userNormal'
     });
     // guardar o utilizador na base de dados
     const userCreated = await user.save();
@@ -141,7 +141,7 @@ exports.login = async (req, res) => {
 
 exports.getAllUsers = async (req, res) => {
   try {
-    if (req.loggedUserType != 'admin') {
+    if (req.loggedUserType !== 'admin') {
       return res.status(403).json({
         success: false,
         msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
@@ -149,7 +149,7 @@ exports.getAllUsers = async (req, res) => {
     }
 
     // Obter todos os usuários com atributos selecionados
-    const users = await User.find({}, 'id username email tipo ');
+    const users = await User.find({}, 'username email morada localidade codigopostal datanascimento desafios ecopontosUtilizados ecopontosRegistados medalhas tipo ');
 
     res.status(200).json({
       success: true,

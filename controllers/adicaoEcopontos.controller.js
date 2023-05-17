@@ -5,6 +5,7 @@ const RegistoAdicaoEcoponto = db.registoadicaoecoponto;
 // Create and Save a new AdicaoEcoponto mas só se o utilizador estiver autenticado
 exports.createAdicaoEcoponto = async (req, res) => {
     const adicaoEcoponto = new AdicaoEcoponto({
+        criador: req.loggedUserId,
         morada: req.body.morada,
         localizacao: req.body.localizacao,
         dataCriacao: req.body.dataCriacao,
