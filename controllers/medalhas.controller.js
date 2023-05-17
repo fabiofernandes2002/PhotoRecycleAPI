@@ -133,11 +133,11 @@ exports.deleteMedalha = async (req, res) => {
         if (!data)
             return res.status(404).json({
                 success: false,
-                msg: "Medalha não encontrado!"
+                msg: "Medalha não encontrada!"
             });
         else res.status(200).json({
             success: true,
-            msg: "Medalha eliminado com sucesso!"
+            msg: "Medalha eliminada com sucesso!"
         });
     }
     catch (err) {
