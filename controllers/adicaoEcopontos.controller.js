@@ -17,7 +17,7 @@ exports.createAdicaoEcoponto = async (req, res) => {
     });
 
     // o valor de criador tem de ser igual ao id do utilizador autenticado
-    if (req.loggedUserId !== req.params.id ) { 
+    if (req.loggedUserId !== req.params.id) {
         // passar o id do utilizador autenticado para o id do criador
         adicaoEcoponto.criador = req.loggedUserId;
     } else {
@@ -76,6 +76,12 @@ exports.findAllRegistoAdicaoEcopontos = async (req, res) => {
     } : {};
 
     try {
+        if (req.loggedUserType != 'admin') {
+            return res.status(403).json({
+                success: false,
+                msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
+            });
+        }
         const data = await RegistoAdicaoEcoponto.find(condition).
         select('foto criador localizacao morada tipo latitude longitude dataCriacao validacao').
         exec();

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const desafiosController = require('../controllers/desafios.controller.js');
+const authController = require('../controllers/auth.controller');
 
 router.use((req, res, next) => {
     const start = Date.now();
@@ -13,13 +14,13 @@ router.use((req, res, next) => {
 })
 
 router.route('/')
-    .get(desafiosController.findAllDesafios)
-    .post(desafiosController.createDesafio);
+    .get(authController.verifyToken, desafiosController.findAllDesafios)
+    .post(authController.verifyToken, desafiosController.createDesafio);
 
 router.route('/:idDesafio')
-    .get(desafiosController.findOneDesafio)
-    .put(desafiosController.updateDesafio)
-    .delete(desafiosController.deleteDesafio);
+    .get(authController.verifyToken, desafiosController.findOneDesafio)
+    .put(authController.verifyToken, desafiosController.updateDesafio)
+    .delete(authController.verifyToken, desafiosController.deleteDesafio);
 
 
 // find desafios by estado

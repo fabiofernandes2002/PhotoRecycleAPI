@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const registoAdicaoEcopontoController = require('../controllers/registoAdicaoEcoponto.controller.js');
+const authController = require('../controllers/auth.controller');
 
 router.use((req, res, next) => {
     const start = Date.now();
@@ -14,15 +15,15 @@ router.use((req, res, next) => {
 )
 
 router.route('/')
-    .get(registoAdicaoEcopontoController.findAllRegistoAdicaoEcopontos)
+    .get(authController.verifyToken, registoAdicaoEcopontoController.findAllRegistoAdicaoEcopontos)
     //.post(registoAdicaoEcopontoController.createRegistoAdicaoEcoponto);
 
 router.route('/:idAdicaoEcoponto')
-    .get(registoAdicaoEcopontoController.findOneRegistoAdicaoEcoponto)
-    .delete(registoAdicaoEcopontoController.deleteRegistoAdicaoEcoponto);
+    .get(authController.verifyToken, registoAdicaoEcopontoController.findOneRegistoAdicaoEcoponto)
+    .delete(authController.verifyToken, registoAdicaoEcopontoController.deleteRegistoAdicaoEcoponto);
 
 router.route('/validar/:idAdicaoEcoponto')
-    .put(registoAdicaoEcopontoController.validarRegistoAdicaoEcoponto);
+    .put(authController.verifyToken, registoAdicaoEcopontoController.validarRegistoAdicaoEcoponto);
 
 router.all('*', function (req, res) {
     res.status(404).json({

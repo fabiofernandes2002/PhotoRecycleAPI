@@ -10,6 +10,13 @@ exports.createMedalha = async (req, res) => {
     });
 
     try {
+        if (req.loggedUserType != 'admin') {
+            return res.status(403).json({
+                success: false,
+                msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
+            });
+        }
+        
         await medalha.save();
         res.status(201).json({
             sucess: true,
@@ -64,6 +71,12 @@ exports.findOneMedalha = async (req, res) => {
     const idMedalha = req.params.idMedalha;
 
     try {
+        if (req.loggedUserType != 'admin') {
+            return res.status(403).json({
+                success: false,
+                msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
+            });
+        }
         const data = await Medalha.findById(idMedalha).
         select('nomeMedalha urlMedalha pontos').
         exec();
@@ -90,6 +103,12 @@ exports.updateMedalha = async (req, res) => {
     const dados = req.body;
 
     try {
+        if (req.loggedUserType != 'admin') {
+            return res.status(403).json({
+                success: false,
+                msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
+            });
+        }
         const data = await Medalha.findByIdAndUpdate(idMedalha, dados, {
             new: true,
             runValidators: true
@@ -129,6 +148,12 @@ exports.deleteMedalha = async (req, res) => {
     const idMedalha = req.params.idMedalha;
 
     try {
+        if (req.loggedUserType != 'admin') {
+            return res.status(403).json({
+                success: false,
+                msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
+            });
+        }
         const data = await Medalha.findByIdAndRemove(idMedalha);
         if (!data)
             return res.status(404).json({

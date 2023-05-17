@@ -33,7 +33,7 @@ router.route('/:idRegistoUtilizacao')
 
 // validadr a utilização de um ecoponto por admin quando estiver logado passando a validação para true
 router.route('/validar/:idRegistoUtilizacao')
-    .put(registoUtilizacaoController.validarRegistoUtilizacao);
+    .put(authController.verifyToken, registoUtilizacaoController.validarRegistoUtilizacao);
 
 
 

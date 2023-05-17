@@ -1,45 +1,6 @@
 const db = require("../models");
 const AdicaoEcoponto = db.registoadicaoecoponto;
 
-// Create and Save a new AdicaoEcoponto
-/* exports.createRegistoAdicaoEcoponto = async (req, res) => {
-    const adicaoEcoponto = new AdicaoEcoponto({
-        foto: req.body.foto,
-        idUtilizador: req.body.idUtilizador,
-        localizacao: req.body.localizacao,
-        morada: req.body.morada,
-        tipo: req.body.tipo,
-        latitude: req.body.latitude,
-        longitude: req.body.longitude,
-        dataCriacao: req.body.dataCriacao,
-        validacao: req.body.validacao,
-    });
-
-    try {
-        await adicaoEcoponto.save();
-        res.status(201).json({
-            sucess: true,
-            msg: "Novo ecoponto criado com sucesso!",
-            URL: `/adicaoEcopontos/${adicaoEcoponto._id}`
-        });
-    } catch (err) {
-        if (err.name === 'ValidationError') {
-            let errors = [];
-            Object.keys(err.errors).forEach((key) => {
-                errors.push(err.errors[key].message);
-            });
-            return res.status(400).json({
-                success: false,
-                msgs: errors
-            });
-        }
-        res.status(500).json({
-            success: false,
-            msg: err.message || 'Algo deu errado. Por favor, tente novamente mais tarde. ',
-        });
-    }
-} */
-
 // Retrieve all AdicaoEcopontos from the database.
 exports.findAllRegistoAdicaoEcopontos = async (req, res) => {
     const idUtilizador = req.query.idUtilizador;
@@ -50,6 +11,13 @@ exports.findAllRegistoAdicaoEcopontos = async (req, res) => {
     } : {};
 
     try {
+        if (req.loggedUserType != 'admin') {
+            return res.status(403).json({
+                success: false,
+                msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
+            });
+        }
+
         const data = await AdicaoEcoponto.find(condition).
         select('foto criador localizacao morada tipo latitude longitude dataCriacao validacao').
         exec();
@@ -70,6 +38,13 @@ exports.findOneRegistoAdicaoEcoponto = async (req, res) => {
     const idAdicaoEcoponto = req.params.idAdicaoEcoponto;
 
     try {
+        if (req.loggedUserType != 'admin') {
+            return res.status(403).json({
+                success: false,
+                msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
+            });
+        }
+
         const data = await AdicaoEcoponto.findById(idAdicaoEcoponto).
         select('foto idUtilizador localizacao morada tipo latitude longitude dataCriacao validacao').
         exec();
@@ -95,6 +70,13 @@ exports.deleteRegistoAdicaoEcoponto = async (req, res) => {
     const idAdicaoEcoponto = req.params.idAdicaoEcoponto;
 
     try {
+        if (req.loggedUserType != 'admin') {
+            return res.status(403).json({
+                success: false,
+                msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
+            });
+        }
+
         const data = await AdicaoEcoponto.findByIdAndRemove(idAdicaoEcoponto);
         if (!data)
             res.status(404).json({
@@ -118,6 +100,13 @@ exports.validarRegistoAdicaoEcoponto = async (req, res) => {
     const idAdicaoEcoponto = req.params.idAdicaoEcoponto;
 
     try {
+        if (req.loggedUserType != 'admin') {
+            return res.status(403).json({
+                success: false,
+                msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
+            });
+        }
+
         const data = await AdicaoEcoponto.findByIdAndUpdate(idAdicaoEcoponto, {
             validacao: true
         }, {
