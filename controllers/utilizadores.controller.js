@@ -117,8 +117,8 @@ exports.login = async (req, res) => {
     // sign the given payload (user ID and role) into a JWT payload –builds JWT token, using secret key
     const token = jwt.sign(
       {
-        id: User.id,
-        tipo: User.tipo,
+        id: user.id,
+        tipo: user.tipo,
       },
       config.SECRET,
       {
@@ -141,12 +141,14 @@ exports.login = async (req, res) => {
 
 exports.getAllUsers = async (req, res) => {
   try {
+    console.log(req.loggedUserType);
     if (req.loggedUserType !== 'admin') {
       return res.status(403).json({
         success: false,
         msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
       });
     }
+    
 
     // Obter todos os usuários com atributos selecionados
     const users = await User.find({}, 'username email morada localidade codigopostal datanascimento desafios ecopontosUtilizados ecopontosRegistados medalhas tipo ');
