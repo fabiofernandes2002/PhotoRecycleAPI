@@ -1,3 +1,15 @@
+const {
+  url
+} = require("inspector")
+const validate = require('mongoose-validator');
+
+const urlValidator = [
+  validate({
+      validator: 'isURL',
+      message: 'Deve ser uma URL válida',
+  }),
+];
+
 module.exports = (mongoose) => {
   const { Schema } = mongoose;
 
@@ -5,9 +17,10 @@ module.exports = (mongoose) => {
     {
       nome: { type: String, required: true },
       localizacao: { type: String, required: true },
+      criador: { type: String},
       morada: { type: String, required: true },
-      dataCriacao: { type: Date, required: true },
-      estado: { type: String, required: true },
+      dataCriacao: { type: Date },
+      foto: { type: String, validate: urlValidator },
       tipo: { type: String, required: true },
       latitude: { type: String, required: true },
       longitude: { type: String, required: true },

@@ -151,7 +151,7 @@ exports.getAllUsers = async (req, res) => {
     
 
     // Obter todos os usuários com atributos selecionados
-    const users = await User.find({}, 'username email morada localidade codigopostal datanascimento desafios ecopontosUtilizados ecopontosRegistados medalhas tipo ');
+    const users = await User.find({}, 'username email morada localidade codigopostal datanascimento desafios pontos ecopontosUtilizados ecopontosRegistados medalhas tipo ');
 
     res.status(200).json({
       success: true,
@@ -267,6 +267,29 @@ exports.editProfile = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       message: `Algo deu errado. Por favor, tente novamente mais tarde.`,
+    });
+  }
+};
+
+// tabela de classificação dos utilizadores(tipo:userNormal) por pontos (top 10) - parametros da tabela: classificação, username, pontos
+exports.getTop10 = async (req, res) => {
+  try {
+    const users = await User.find({tipo: 'userNormal'}, 'classificacao username pontos').sort({ pontos: -1 }).limit(10);
+
+    let classificacao = 1;
+    for (let i = 0; i < users.length; i++) {
+      users[i].classificacao = classificacao;
+      classificacao++;
+    }
+
+    res.status(200).json({
+      success: true,
+      users: users,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      msg: err.message || `Algo deu errado. Por favor, tente novamente mais tarde.`,
     });
   }
 };
