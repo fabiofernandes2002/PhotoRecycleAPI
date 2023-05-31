@@ -18,6 +18,8 @@ app.get('/', function (req, res) {
 app.use('/desafios', require('./routes/desafios.routes.js'))
 app.use('/registoUtilizacao', require('./routes/registoUtilizacoes.routes.js'))
 app.use('/medalhas', require('./routes/medalhas.routes.js'))
+app.use('/adicaoEcoponto', require('./routes/adicaoEcopontos.routes.js'))
+app.use('/registoAdicaoEcoponto', require('./routes/registoAdicaoEcoponto.routes.js'))
 app.use('/users', require('./routes/utilizadores.routes.js'));
 app.use('/ecopontos', require('./routes/ecopontos.routes.js'));
 
