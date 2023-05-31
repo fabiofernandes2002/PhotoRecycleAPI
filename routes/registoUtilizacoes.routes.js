@@ -31,8 +31,8 @@ router.route('/:idRegistoUtilizacao')
     //.put(authController.verifyToken, registoUtilizacaoController.updateRegistoUtilizacao)
     .delete(authController.verifyToken, registoUtilizacaoController.deleteRegistoUtilizacao);
 
-// validadr a utilização de um ecoponto por admin quando estiver logado passando a validação para true
-router.route('/validar/:idRegistoUtilizacao')
+// validar a utilização de um ecoponto por admin quando estiver logado passando a validação para true
+router.route('/validacao/:idRegistoUtilizacao')
     .put(authController.verifyToken, registoUtilizacaoController.validarRegistoUtilizacao);
 
 

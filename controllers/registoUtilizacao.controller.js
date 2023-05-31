@@ -1,5 +1,6 @@
 const db = require("../models");
 const RegistoUtilizacao = db.registoutilizacaos;
+const User = db.utilizadores;
 
 // Retrieve all RegistoUtilizacaos from the database.
 exports.findAllRegistoUtilizacoes = async (req, res) => {
@@ -175,9 +176,19 @@ exports.validarRegistoUtilizacao = async (req, res) => {
     else
       res.status(200).json({
         success: true,
-        msg: 'Utilização do ecoponto validada co sucesso.!',
+        msg: 'Utilização do ecoponto validada co sucesso!',
         URL: `/registoUtilizacoes/${idRegistoUtilizacao}`,
       });
+
+      // atribuir pontos ao utilizador que fez a utilização do ecoponto
+        const utilizador = await User.findById(data.idUtilizador);
+        const pontos = utilizador.pontos + 10;
+        utilizador.pontos = pontos;
+        await User.findByIdAndUpdate(data.idUtilizador, utilizador, { 
+            new: true,
+            runValidators: true,
+        });
+
   } catch (err) {
     if (err.name === 'ValidationError') {
       let errors = [];

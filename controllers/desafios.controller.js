@@ -6,11 +6,7 @@ exports.createDesafio = async (req, res) => {
     const desafio = new Desafio({
         nome: req.body.nome,
         descricao: req.body.descricao,
-        dataInicio: req.body.dataInicio,
-        dataFim: req.body.dataFim,
         recompensa: req.body.recompensa,
-        estado: req.body.estado,
-        pontuacao: req.body.pontuacao,
     });
 
     // Verificar se o desafio já existe
@@ -66,7 +62,7 @@ exports.findAllDesafios = async (req, res) => {
 
     try {
         let data = await Desafio.find(condition)
-            .select('nome descricao dataInicio dataFim recompensa estado pontuacao')
+            .select('nome descricao recompensa')
             .exec();
         res.status(200).json({
             success: true,
@@ -86,7 +82,7 @@ exports.findOneDesafio = async (req, res) => {
 
     try {
         const desafio = await Desafio.findById(idDesafio).
-        select('nome descricao dataInicio dataFim recompensa estado pontuacao').
+        select('nome descricao recompensa').
         exec();
         if (desafio === null) {
             return res.status(404).json({

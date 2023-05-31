@@ -16,13 +16,16 @@ router.route('/')
     .get(authController.verifyToken, utilizadoresController.getAllUsers)
     .post(utilizadoresController.registo)
 
+router.route('/top10')
+    .get(authController.verifyToken, utilizadoresController.getTop10)
+
 router.route('/login')
     .post(utilizadoresController.login)
 
 router.route('/:id')
     .get(authController.verifyToken, utilizadoresController.getUser)
     .patch(authController.verifyToken, utilizadoresController.editProfile)
-    .delete(authController.verifyToken, utilizadoresController.deleteUser);
+    .delete(authController.verifyToken, utilizadoresController.deleteUser)
 
 
 router.all('*', function (req, res) {

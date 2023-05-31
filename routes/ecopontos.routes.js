@@ -15,17 +15,15 @@ router.use((req, res, next) => {
 
 router.route('/').get(authController.verifyToken, ecopontosController.findAll);
 
-/* .post(ecopontosController.create); */
-
 router.route('/:ecopointID').get(authController.verifyToken, ecopontosController.findOne);
+
+router.route('/validacao/:ecopointID').put(authController.verifyToken, ecopontosController.validateEcopoint);
 
 router.route('/:ecopointID/use').post(authController.verifyToken, ecopontosController.useEcopoint);
 
-/* router.route('/:ecopontoID/validate').post(ecopontosController.validateEcopoint); */
+router.route('/adicaoEcoponto').post(authController.verifyToken, ecopontosController.createAdicaoEcoponto)
 
-/* router.route('/:ecopontoID').put(ecopontosController.update); */
-
-router.route('/:ecopontoID').delete(authController.verifyToken, ecopontosController.delete);
+router.route('/:ecopontID').delete(authController.verifyToken, ecopontosController.delete);
 
 router.all('*', function (req, res) {
   res.status(404).json({ message: 'What???' });
