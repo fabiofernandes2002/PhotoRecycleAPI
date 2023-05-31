@@ -1,6 +1,6 @@
 const db = require('../models');
 const Ecopoint = db.ecopontos;
-const RegistoUtilizacao = db.registoutilizacaos;
+const RegistoUtilizacao = db.utilizacoes;
 const User = db.utilizadores;
 
 // Registar um novo ecoponto

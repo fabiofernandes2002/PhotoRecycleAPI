@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const registoUtilizacaoController = require('../controllers/registoUtilizacao.controller.js');
-const authController = require('../controllers/auth.controller');
+const registoUtilizacaoController = require('../controllers/utilizacoes.controller.js');
+const authController = require('../controllers/auth.controller.js');
 
 router.use((req, res, next) => {
     const start = Date.now();

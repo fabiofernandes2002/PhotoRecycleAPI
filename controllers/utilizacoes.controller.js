@@ -1,5 +1,5 @@
 const db = require("../models");
-const RegistoUtilizacao = db.registoutilizacaos;
+const RegistoUtilizacao = db.utilizacoes;
 const User = db.utilizadores;
 
 // Retrieve all RegistoUtilizacaos from the database.
