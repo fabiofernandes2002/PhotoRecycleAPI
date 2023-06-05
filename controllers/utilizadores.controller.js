@@ -57,6 +57,7 @@ exports.registo = async (req, res) => {
     const user = new User({
       username: req.body.username,
       password: bcrypt.hashSync(req.body.password, 10),
+      confirmPassword: req.body.confirmPassword,
       email: req.body.email,
       datanascimento: req.body.datanascimento,
       morada: req.body.morada,
