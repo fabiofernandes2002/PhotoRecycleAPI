@@ -60,12 +60,12 @@ exports.findAll = async (req, res) => {
   const condition = tipo ? { tipo: new RegExp(tipo, 'i') } : {};
   try {
     // find function parameters: filter, projection (select) / returns a list of documents
-    let data = await Ecopoint.find(condition)
+    let ecopontos = await Ecopoint.find(condition)
       .select(
         'nome criador localizacao morada dataCriacao foto tipo latitude longitude validacao'
       ) // select the fields: do not show versionKey field
       .exec(); // execute the query
-    res.status(200).json({ success: true, ecopoints: data });
+    res.status(200).json({ success: true, ecopontos: ecopontos });
   } catch (err) {
     res.status(500).json({
       success: false,

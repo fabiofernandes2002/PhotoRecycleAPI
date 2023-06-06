@@ -17,7 +17,7 @@ db.mongoose
   });
 
 db.desafios = require('./desafios.model.js')(mongoose);
-db.utilizacaos = require('./utilizacoes.model.js')(mongoose);
+db.utilizacoes = require('./utilizacoes.model.js')(mongoose);
 db.medalhas = require('./medalhas.model.js')(mongoose);
 db.utilizadores = require('./utilizadores.model.js')(mongoose);
 db.ecopontos = require('./ecopontos.model.js')(mongoose);
