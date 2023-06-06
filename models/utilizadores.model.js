@@ -26,7 +26,7 @@ module.exports = (mongoose) => {
         required: true,
         unique: true,
       },
-      datanascimento: {
+      dataNascimento: {
         type: Date,
         required: true,
       },
@@ -42,7 +42,7 @@ module.exports = (mongoose) => {
         type: String,
         required: true,
       },
-      codigopostal: {
+      codigoPostal: {
         type: String,
         required: true,
       },

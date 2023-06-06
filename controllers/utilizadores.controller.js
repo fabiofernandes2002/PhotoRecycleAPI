@@ -14,10 +14,10 @@ exports.registo = async (req, res) => {
       !req.body.password &&
       !req.body.confirmPassword &&
       !req.body.email &&
-      !req.body.datanascimento &&
+      !req.body.dataNascimento &&
       !req.body.morada &&
       !req.body.localidade &&
-      !req.body.codigopostal &&
+      !req.body.codigoPostal &&
       !req.body.tipo
     ) {
       return res.status(400).send({
@@ -59,10 +59,10 @@ exports.registo = async (req, res) => {
       password: bcrypt.hashSync(req.body.password, 10),
       confirmPassword: req.body.confirmPassword,
       email: req.body.email,
-      datanascimento: req.body.datanascimento,
+      dataNascimento: req.body.dataNascimento,
       morada: req.body.morada,
       localidade: req.body.localidade,
-      codigopostal: req.body.codigopostal,
+      codigoPostal: req.body.codigoPostal,
       tipo: req.body.tipo || 'userNormal'
     });
     // guardar o utilizador na base de dados
@@ -152,7 +152,7 @@ exports.getAllUsers = async (req, res) => {
     
 
     // Obter todos os usuários com atributos selecionados
-    const users = await User.find({}, 'username email morada localidade codigopostal datanascimento desafios pontos ecopontosUtilizados ecopontosRegistados medalhas tipo ');
+    const users = await User.find({}, 'username email morada localidade codigoPostal dataNascimento desafios pontos ecopontosUtilizados ecopontosRegistados medalhas tipo ');
 
     res.status(200).json({
       success: true,
