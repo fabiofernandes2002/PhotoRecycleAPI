@@ -22,8 +22,8 @@ module.exports = (mongoose) => {
       dataCriacao: { type: Date },
       foto: { type: String, validate: urlValidator },
       tipo: { type: String, required: true },
-      latitude: { type: number},
-      longitude: { type: number},
+      latitude: { type: Number},
+      longitude: { type: Number},
       validacao: { type: Boolean, default: false },
     },
     { timestamps: false }
