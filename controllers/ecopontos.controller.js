@@ -35,7 +35,6 @@ exports.createAdicaoEcoponto = async (req, res) => {
           sucess: true,
           msg: "Novo registo de adição criado com sucesso!",
           URL: `/adicaoEcopontos/${adicaoEcoponto._id}`,
-          ecoponto: adicaoEcoponto
       });
   } catch (err) {
       if (err.name === 'ValidationError') {
