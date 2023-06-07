@@ -23,7 +23,7 @@ router.route('/login')
     .post(utilizadoresController.login)
 
 router.route('/:id')
-    .get(authController.verifyToken, utilizadoresController.getUser)
+    .get(authController.verifyToken, utilizadoresController.getUserById)
     .patch(authController.verifyToken, utilizadoresController.editProfile)
     .delete(authController.verifyToken, utilizadoresController.deleteUser)
 

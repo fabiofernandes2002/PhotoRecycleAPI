@@ -166,7 +166,7 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-exports.getUser = async (req, res) => {
+exports.getUserById = async (req, res) => {
   try {
     if (req.loggedUserId !== req.params.id && req.loggedUserType != 'admin') {
       return res.status(403).json({
