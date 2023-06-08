@@ -17,6 +17,7 @@ exports.verifyToken = async (req, res, next) => {
         let decoded = jwt.verify(token, config.SECRET);
         req.loggedUserId = decoded.id;
         req.loggedUserType = decoded.tipo;
+        req.loggedUserUsername = decoded.username;
         next();
 
     } catch (err) {
