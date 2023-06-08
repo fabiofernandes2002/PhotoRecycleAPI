@@ -120,6 +120,7 @@ exports.login = async (req, res) => {
       {
         id: user.id,
         tipo: user.tipo,
+        username: user.username,
       },
       config.SECRET,
       {
