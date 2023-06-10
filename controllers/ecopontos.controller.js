@@ -15,7 +15,7 @@ exports.createAdicaoEcoponto = async (req, res) => {
       latitude: req.body.latitude,
       longitude: req.body.longitude,
       tipo: req.body.tipo,
-      validacao: req.body.validacao,
+      validacao: User.tipo === "admin" ? true : false,
   });
 
   // o valor de criador tem de ser igual ao id do utilizador autenticado
