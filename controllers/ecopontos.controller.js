@@ -5,6 +5,7 @@ const User = db.utilizadores;
 
 // Registar um novo ecoponto
 exports.createAdicaoEcoponto = async (req, res) => {
+  const validacao = User.tipo === "admin" ? true : false;
   const adicaoEcoponto = new Ecopoint({
       criador: req.loggedUserId,
       nome: req.body.nome,
@@ -15,7 +16,7 @@ exports.createAdicaoEcoponto = async (req, res) => {
       latitude: req.body.latitude,
       longitude: req.body.longitude,
       tipo: req.body.tipo,
-      validacao: User.tipo === "admin" ? true : false,
+      validacao: validacao,
   });
 
   // o valor de criador tem de ser igual ao id do utilizador autenticado
