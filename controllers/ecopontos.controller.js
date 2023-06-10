@@ -176,7 +176,7 @@ exports.validateEcopoint = async (req, res) => {
   }
 };
 
-exports.deleteEcopointById = async (req, res) => {
+exports.deleteEcopontoById = async (req, res) => {
   try {
     if (req.loggedUserType != 'admin') {
       return res.status(403).json({

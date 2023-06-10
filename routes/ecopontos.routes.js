@@ -23,7 +23,7 @@ router.route('/:ecopointID/use').post(authController.verifyToken, ecopontosContr
 
 router.route('/adicaoEcoponto').post(authController.verifyToken, ecopontosController.createAdicaoEcoponto)
 
-router.route('/:ecopontID').delete(authController.verifyToken, ecopontosController.deleteEcopointById);
+router.route('/:ecopontID').delete(authController.verifyToken, ecopontosController.deleteEcopontoById);
 
 router.all('*', function (req, res) {
   res.status(404).json({ message: 'What???' });
