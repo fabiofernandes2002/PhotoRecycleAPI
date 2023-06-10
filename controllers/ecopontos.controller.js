@@ -185,8 +185,7 @@ exports.deleteEcopontoById = async (req, res) => {
       });
     }
 
-    const ecopointID = req.params.id;
-    const ecopoint = await Ecopoint.findById(ecopointID).exec();
+    const ecopoint = await Ecopoint.findByIdAndDelete(req.params.id).exec();
 
     if (ecopoint === null)
       return res.status(404).json({
