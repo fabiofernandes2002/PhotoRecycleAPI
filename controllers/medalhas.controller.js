@@ -1,6 +1,31 @@
 const db = require("../models");
 const Medalha = db.medalhas;
 
+// Retrieve all Medalhas from the database.
+exports.findAllMedalhas = async (req, res) => {
+    const nomeMedalha = req.query.nomeMedalha;
+    const condition = nomeMedalha ? {
+        nomeMedalha: {
+            new: RegExp(nomeMedalha, "i"),
+        }
+    } : {};
+    
+    try {
+        const data = await Medalha.find(condition).
+        select('nomeMedalha urlMedalha pontos').
+        exec();
+        res.status(200).json({
+            success: true,
+            medalhas: data
+        });
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            msg: err.message || 'Algo deu errado. Por favor, tente novamente mais tarde. ',
+        });
+    }
+}
+
 // Create and Save a new Medalha
 exports.createMedalha = async (req, res) => {
     const medalha = new Medalha({
@@ -34,31 +59,6 @@ exports.createMedalha = async (req, res) => {
                 msgs: errors
             });
         }
-        res.status(500).json({
-            success: false,
-            msg: err.message || 'Algo deu errado. Por favor, tente novamente mais tarde. ',
-        });
-    }
-}
-
-// Retrieve all Medalhas from the database.
-exports.findAllMedalhas = async (req, res) => {
-    const nomeMedalha = req.query.nomeMedalha;
-    const condition = nomeMedalha ? {
-        nomeMedalha: {
-            new: RegExp(nomeMedalha, "i"),
-        }
-    } : {};
-    
-    try {
-        const data = await Medalha.find(condition).
-        select('nomeMedalha urlMedalha pontos').
-        exec();
-        res.status(200).json({
-            success: true,
-            medalhas: data
-        });
-    } catch (err) {
         res.status(500).json({
             success: false,
             msg: err.message || 'Algo deu errado. Por favor, tente novamente mais tarde. ',
