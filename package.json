@@ -19,6 +19,7 @@
   "homepage": "https://github.com/LucasSilva194/PhotoRecycleAPI#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cloudinary": "^1.37.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",

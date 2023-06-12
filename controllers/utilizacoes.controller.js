@@ -2,6 +2,69 @@ const db = require("../models");
 const RegistoUtilizacao = db.utilizacoes;
 const User = db.utilizadores;
 
+const config = require("../config/db.config.js");
+const cloudinary = require("cloudinary").v2;
+
+cloudinary.config({
+  cloud_name: config.CLOUDINARY_CLOUD_NAME,
+  api_key: config.CLOUDINARY_API_KEY,
+  api_secret: config.CLOUDINARY_API_SECRET,
+});
+
+// create utilizaco
+exports.createUtilizacao = async (req,res) => {
+
+    try {
+        const ecopointID = req.params.id;
+
+    const utilizacao = await RegistoUtilizacao.findById(ecopointID).exec();
+
+    let ecoponto_imgage = null;
+    if (req.file) {
+    ecoponto_imgage = await cloudinary.uploader.upload(req.file.path, {
+        folder: "Ecopontos",
+        crop: "scale",
+    });
+    } else{
+    return res.status(400).json({
+        success: false,
+        msg: "Coloque uma foto.",
+    });
+    }
+
+    const registoUtilizacao = new RegistoUtilizacao({
+        idUtilizador: req.loggedUserID,
+        idEcoponto: ecopointID,
+        dataUtilizacao: Date.now(),
+        foto: image_utilizacao.secure_url,
+        validacao: false,
+    });
+  
+    // save the registoUtilizacao in the database
+    await registoUtilizacao.save();
+
+    if (!utilizacao) {
+        return res.status(404).json({
+          success: false,
+          msg: `Não foi possível encontrar o ecoponto com o ID: ${ecopointID}.`,
+        });
+      }
+      res.status(200).json({
+        success: true,
+        ecoponto: utilizacao,
+        /* falta adicionar a utilização do ecoponto pelo utilizador */
+        msg: `O ecoponto com o ID: ${ecopointID} foi utilizado com sucesso.`,
+    });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            msg: 'Algo deu errado. Por favor, tente novamente mais tarde.',
+        });
+    }
+
+
+}
+
 // Retrieve all RegistoUtilizacaos from the database.
 exports.findAllRegistoUtilizacoes = async (req, res) => {
   const idUtilizador = req.query.idUtilizador;

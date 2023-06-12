@@ -3,16 +3,40 @@ const Ecopoint = db.ecopontos;
 const RegistoUtilizacao = db.utilizacoes;
 const User = db.utilizadores;
 
+const config = require("../config/db.config.js");
+const cloudinary = require("cloudinary").v2;
+
+cloudinary.config({
+  cloud_name: config.CLOUDINARY_CLOUD_NAME,
+  api_key: config.CLOUDINARY_API_KEY,
+  api_secret: config.CLOUDINARY_API_SECRET,
+});
+
 // Registar um novo ecoponto
 exports.createAdicaoEcoponto = async (req, res) => {
   const validacao = User.tipo === "admin" ? true : false;
+
+  let ecoponto_imgage = null;
+  if (req.file) {
+    ecoponto_imgage = await cloudinary.uploader.upload(req.file.path, {
+      folder: "Ecopontos",
+      crop: "scale",
+    });
+  } else{
+    return res.status(400).json({
+      success: false,
+      msg: "Coloque uma foto.",
+    });
+  }
+  
+
   const adicaoEcoponto = new Ecopoint({
       criador: req.loggedUserId,
       nome: req.body.nome,
       morada: req.body.morada,
       localizacao: req.body.localizacao,
       dataCriacao: req.body.dataCriacao,
-      foto: req.body.foto,
+      foto: ecoponto_imgage.secure_url,
       latitude: req.body.latitude,
       longitude: req.body.longitude,
       tipo: req.body.tipo,
@@ -100,16 +124,24 @@ exports.findOne = async (req, res) => {
 // Function to use the Ecopoint model
 exports.useEcopoint = async (req, res) => {
   try {
-    const ecopointID = req.params.ecopointID;
+    const ecopointID = req.params.id;
 
     const ecopoint = await Ecopoint.findById(ecopointID).exec();
+
+    let image_utilizacao = null;
+    if (req.file) {
+      image_utilizacao = await cloudinary.uploader.upload(req.file.path, {
+        folder: 'utilizacoes',
+        crop: 'scale',
+      })
+    }
 
     // usar registo de utilização para guardar o idUtilizador, idEcoponto, dataUtilizacao, foto, validacao
     const registoUtilizacao = new RegistoUtilizacao({
       idUtilizador: req.loggedUserID,
       idEcoponto: ecopointID,
       dataUtilizacao: Date.now(),
-      foto: req.body.foto,
+      foto: image_utilizacao.secure_url,
       validacao: false,
     });
 
