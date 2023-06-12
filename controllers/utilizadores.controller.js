@@ -5,6 +5,32 @@ const db = require('../models');
 const config = require('../config/db.config.js');
 const User = db.utilizadores;
 
+exports.getAllUsers = async (req, res) => {
+  try {
+    console.log(req.loggedUserType);
+    if (req.loggedUserType !== 'admin') {
+      return res.status(403).json({
+        success: false,
+        msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
+      });
+    }
+    
+
+    // Obter todos os usuários com atributos selecionados
+    const users = await User.find({}, 'username email morada localidade codigoPostal dataNascimento desafios pontos ecopontosUtilizados ecopontosRegistados medalhas tipo ');
+
+    res.status(200).json({
+      success: true,
+      users: users,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      msg: err.message || 'Algo deu errado. Por favor, tente novamente mais tarde.',
+    });
+  }
+};
+
 // Registar um novo utilizador
 exports.registo = async (req, res) => {
   try {
@@ -89,6 +115,29 @@ exports.registo = async (req, res) => {
   }
 };
 
+// tabela de classificação dos utilizadores(tipo:userNormal) por pontos (top 10) - parametros da tabela: classificação, username, pontos
+exports.getTop10 = async (req, res) => {
+  try {
+    const users = await User.find({tipo: 'userNormal'}, 'classificacao username pontos').sort({ pontos: -1 }).limit(10);
+
+    let classificacao = 1;
+    for (let i = 0; i < users.length; i++) {
+      users[i].classificacao = classificacao;
+      classificacao++;
+    }
+
+    res.status(200).json({
+      success: true,
+      users: users,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      msg: err.message || `Algo deu errado. Por favor, tente novamente mais tarde.`,
+    });
+  }
+};
+
 // Login
 exports.login = async (req, res) => {
   try {
@@ -137,32 +186,6 @@ exports.login = async (req, res) => {
     res.status(500).send({
       success: false,
       msg: `Algo deu errado. Por favor, tente novamente mais tarde.`,
-    });
-  }
-};
-
-exports.getAllUsers = async (req, res) => {
-  try {
-    console.log(req.loggedUserType);
-    if (req.loggedUserType !== 'admin') {
-      return res.status(403).json({
-        success: false,
-        msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
-      });
-    }
-    
-
-    // Obter todos os usuários com atributos selecionados
-    const users = await User.find({}, 'username email morada localidade codigoPostal dataNascimento desafios pontos ecopontosUtilizados ecopontosRegistados medalhas tipo ');
-
-    res.status(200).json({
-      success: true,
-      users: users,
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      msg: err.message || 'Algo deu errado. Por favor, tente novamente mais tarde.',
     });
   }
 };
@@ -269,29 +292,6 @@ exports.editProfile = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       message: `Algo deu errado. Por favor, tente novamente mais tarde.`,
-    });
-  }
-};
-
-// tabela de classificação dos utilizadores(tipo:userNormal) por pontos (top 10) - parametros da tabela: classificação, username, pontos
-exports.getTop10 = async (req, res) => {
-  try {
-    const users = await User.find({tipo: 'userNormal'}, 'classificacao username pontos').sort({ pontos: -1 }).limit(10);
-
-    let classificacao = 1;
-    for (let i = 0; i < users.length; i++) {
-      users[i].classificacao = classificacao;
-      classificacao++;
-    }
-
-    res.status(200).json({
-      success: true,
-      users: users,
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      msg: err.message || `Algo deu errado. Por favor, tente novamente mais tarde.`,
     });
   }
 };

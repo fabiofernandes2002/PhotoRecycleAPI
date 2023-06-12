@@ -36,6 +36,60 @@ exports.findAllRegistoUtilizacoes = async (req, res) => {
     }
 }
 
+// list all registoUtilizacoes from the database is validation == true.
+exports.findAllRegistoUtilizacoesValidados = async (req, res) => {
+    try {
+        if (req.loggedUserType != 'admin') {
+            return res.status(403).json({
+                success: false,
+                msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
+            });
+        }
+
+        const data = await RegistoUtilizacao.find({
+            validacao: true
+        }).
+        select('idUtilizador idEcoponto dataUtilizacao foto validacao').
+        exec();
+        res.status(200).json({
+            success: true,
+            registoUtilizacoes: data
+        });
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            msg: err.message || 'Algo deu errado. Por favor, tente novamente mais tarde. ',
+        });
+    }
+}
+
+// list all registoUtilizacoes from the database is validation == false.
+exports.findAllRegistoUtilizacoesNaoValidados = async (req, res) => {
+    try {
+        if (req.loggedUserType != 'admin') {
+            return res.status(403).json({
+                success: false,
+                msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
+            });
+        }
+
+        const data = await RegistoUtilizacao.find({
+            validacao: false
+        }).
+        select('idUtilizador idEcoponto dataUtilizacao foto validacao').
+        exec();
+        res.status(200).json({
+            success: true,
+            registoUtilizacoes: data
+        });
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            msg: err.message || 'Algo deu errado. Por favor, tente novamente mais tarde. ',
+        });
+    }
+}
+
 // Find a single RegistoUtilizacao with an id
 exports.findOneRegistoUtilizacao = async (req, res) => {
   const idRegistoUtilizacao = req.params.idRegistoUtilizacao;
@@ -91,60 +145,6 @@ exports.deleteRegistoUtilizacao = async (req, res) => {
         });
     }
     catch (err) {
-        res.status(500).json({
-            success: false,
-            msg: err.message || 'Algo deu errado. Por favor, tente novamente mais tarde. ',
-        });
-    }
-}
-
-// list all registoUtilizacoes from the database is validation == true.
-exports.findAllRegistoUtilizacoesValidados = async (req, res) => {
-    try {
-        if (req.loggedUserType != 'admin') {
-            return res.status(403).json({
-                success: false,
-                msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
-            });
-        }
-
-        const data = await RegistoUtilizacao.find({
-            validacao: true
-        }).
-        select('idUtilizador idEcoponto dataUtilizacao foto validacao').
-        exec();
-        res.status(200).json({
-            success: true,
-            registoUtilizacoes: data
-        });
-    } catch (err) {
-        res.status(500).json({
-            success: false,
-            msg: err.message || 'Algo deu errado. Por favor, tente novamente mais tarde. ',
-        });
-    }
-}
-
-// list all registoUtilizacoes from the database is validation == false.
-exports.findAllRegistoUtilizacoesNaoValidados = async (req, res) => {
-    try {
-        if (req.loggedUserType != 'admin') {
-            return res.status(403).json({
-                success: false,
-                msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
-            });
-        }
-
-        const data = await RegistoUtilizacao.find({
-            validacao: false
-        }).
-        select('idUtilizador idEcoponto dataUtilizacao foto validacao').
-        exec();
-        res.status(200).json({
-            success: true,
-            registoUtilizacoes: data
-        });
-    } catch (err) {
         res.status(500).json({
             success: false,
             msg: err.message || 'Algo deu errado. Por favor, tente novamente mais tarde. ',
