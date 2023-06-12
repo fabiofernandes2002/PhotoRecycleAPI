@@ -118,7 +118,7 @@ exports.login = async (req, res) => {
     // sign the given payload (user ID and role) into a JWT payload –builds JWT token, using secret key
     const token = jwt.sign(
       {
-        id: user.id,
+        id: user._id,
         tipo: user.tipo,
         username: user.username,
       },
