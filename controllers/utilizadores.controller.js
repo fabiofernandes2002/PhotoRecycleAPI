@@ -290,29 +290,6 @@ exports.editProfile = async (req, res) => {
       });
     }
 
-    // verificar se o username já existe
-    const usernameExist = await User.findOne({
-      username: req.body.username,
-      _id: { $ne: req.params.id }, // Exclude current user from the search
-    }).exec();
-    if (usernameExist) {
-      return res.status(400).send({
-        success: false,
-        msg: 'Username já existe!',
-      });
-    }
-    // verificar se o email já existe
-    const emailExist = await User.findOne({
-      email: req.body.email,
-      _id: { $ne: req.params.id }, // Exclude current user from the search
-    }).exec();
-    if (emailExist) {
-      return res.status(400).send({
-        success: false,
-        msg: 'Email já existe!',
-      });
-    }
-
     // verficar se a password e a confirmação são iguais
     if (req.body.password !== req.body.confirmPassword) {
       return res.status(400).send({
