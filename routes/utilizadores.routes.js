@@ -22,13 +22,13 @@ router.route('/top10')
 router.route('/login')
     .post(utilizadoresController.login)
 
-router.route('/perfil/:id')
-    .get(authController.verifyToken, utilizadoresController.getUser)
-
 router.route('/:id')
     .get(authController.verifyToken, utilizadoresController.getUserById)
     .patch(authController.verifyToken, utilizadoresController.editProfile)
     .delete(authController.verifyToken, utilizadoresController.deleteUser)
+
+router.route('/perfil/:id')
+    .get(authController.verifyToken, utilizadoresController.getUser)
 
 
 router.all('*', function (req, res) {
