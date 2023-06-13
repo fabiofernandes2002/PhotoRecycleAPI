@@ -35,7 +35,7 @@ exports.findAllRegistoUtilizacoes = async (req, res) => {
             exec();
         res.status(200).json({
             success: true,
-            registoUtilizacoes: registoUtilizacao,
+            registoUtilizacao: registoUtilizacao,
         });
     } catch (err) {
         res.status(500).json({
