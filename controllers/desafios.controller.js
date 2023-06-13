@@ -1,30 +1,6 @@
 const db = require("../models");
 const Desafio = db.desafios;
 
-// Retrieve all Desafios from the database.
-exports.findAllDesafios = async (req, res) => {
-
-    const nome = req.query.nome;
-    const condition = nome ? {
-        nome: new RegExp(nome, 'i')
-    } : {};
-
-    try {
-        let data = await Desafio.find(condition)
-            .select('nome descricao recompensa')
-            .exec();
-        res.status(200).json({
-            success: true,
-            desafios: data
-        });
-    } catch (err) {
-        res.status(500).send({
-            success: false,
-            msg: err.message || 'Algo deu errado. Por favor, tente novamente mais tarde.'
-        });
-    }
-}
-
 // Create and Save a new Desafio
 exports.createDesafio = async (req, res) => {
     const desafio = new Desafio({
@@ -75,6 +51,30 @@ exports.createDesafio = async (req, res) => {
         });
     }
 };
+
+// Retrieve all Desafios from the database.
+exports.findAllDesafios = async (req, res) => {
+
+    const nome = req.query.nome;
+    const condition = nome ? {
+        nome: new RegExp(nome, 'i')
+    } : {};
+
+    try {
+        let data = await Desafio.find(condition)
+            .select('nome descricao recompensa')
+            .exec();
+        res.status(200).json({
+            success: true,
+            desafios: data
+        });
+    } catch (err) {
+        res.status(500).send({
+            success: false,
+            msg: err.message || 'Algo deu errado. Por favor, tente novamente mais tarde.'
+        });
+    }
+}
 
 // Find a single Desafio with an id
 exports.findOneDesafio = async (req, res) => {
