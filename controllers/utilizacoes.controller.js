@@ -49,9 +49,9 @@ exports.findAllRegistoUtilizacoes = async (req, res) => {
 exports.createUtilizacao = async (req, res) => {
 
     try {
-        const ecopointID = req.params.id;
+        const ecopointID = req.body.idEcoponto;
 
-        const utilizacao = await RegistoUtilizacao.findById(ecopointID).exec();
+        let utilizacao = await RegistoUtilizacao.findById(ecopointID);
 
         let image_utilizacao = null;
         if (req.file) {
