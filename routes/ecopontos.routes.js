@@ -13,15 +13,27 @@ router.use((req, res, next) => {
   next();
 });
 
+const multer = require("multer");
+let storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "/tmp");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname);
+  },
+});
+
+const multerUpload = multer({ storage: storage }).single("image");
+
 router.route('/').get(authController.verifyToken, ecopontosController.findAll);
 
 router.route('/:ecopointID').get(authController.verifyToken, ecopontosController.findOne);
 
 router.route('/validacao/:ecopointID').put(authController.verifyToken, ecopontosController.validateEcopoint);
 
-router.route('/:ecopointID/use').post(authController.verifyToken, ecopontosController.useEcopoint);
+router.route('/:id/use').post(multerUpload, authController.verifyToken, ecopontosController.useEcopoint);
 
-router.route('/adicaoEcoponto').post(authController.verifyToken, ecopontosController.createAdicaoEcoponto)
+router.route('/adicaoEcoponto').post( multerUpload, authController.verifyToken, ecopontosController.createAdicaoEcoponto)
 
 router.route('/:id').delete(authController.verifyToken, ecopontosController.deleteEcopontoById);
 

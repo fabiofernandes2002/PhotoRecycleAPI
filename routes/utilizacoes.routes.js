@@ -14,9 +14,21 @@ router.use((req, res, next) => {
 }
 )
 
+const multer = require("multer");
+let storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "/tmp");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname);
+  },
+});
+
+const multerUpload = multer({ storage: storage }).single("image");
+
 router.route('/')
     .get(authController.verifyToken, registoUtilizacaoController.findAllRegistoUtilizacoes)
-    //.post(authController.verifyToken, registoUtilizacaoController.createRegistoUtilizacao);
+    .post(multerUpload, authController.verifyToken, registoUtilizacaoController.createUtilizacao);
 
 // all registoUtilizacao is validation = true
 router.route('/validados')

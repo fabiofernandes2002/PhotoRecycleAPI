@@ -7,6 +7,7 @@ module.exports = (mongoose) => {
       localizacao: { type: String, required: true },
       criador: { type: String},
       morada: { type: String, required: true },
+      codigoPostal: {type: String, required: true},
       dataCriacao: { type: Date },
       foto: { type: String, required: true },
       tipo: { type: String, required: true },

@@ -16,9 +16,9 @@ cloudinary.config({
 exports.createAdicaoEcoponto = async (req, res) => {
   const validacao = User.tipo === "admin" ? true : false;
 
-  let ecoponto_imgage = null;
+  let ecoponto_image = null;
   if (req.file) {
-    ecoponto_imgage = await cloudinary.uploader.upload(req.file.path, {
+    ecoponto_image = await cloudinary.uploader.upload(req.file.path, {
       folder: "Ecopontos",
       crop: "scale",
     });
@@ -35,8 +35,9 @@ exports.createAdicaoEcoponto = async (req, res) => {
       nome: req.body.nome,
       morada: req.body.morada,
       localizacao: req.body.localizacao,
-      dataCriacao: req.body.dataCriacao,
-      foto: ecoponto_imgage.secure_url,
+      codigoPostal: req.body.codigoPostal,
+      dataCriacao: Date.now,
+      foto: ecoponto_image.secure_url,
       latitude: req.body.latitude,
       longitude: req.body.longitude,
       tipo: req.body.tipo,
