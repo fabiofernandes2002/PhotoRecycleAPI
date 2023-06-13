@@ -63,7 +63,7 @@ exports.registo = async (req, res) => {
       morada: req.body.morada,
       localidade: req.body.localidade,
       codigoPostal: req.body.codigoPostal,
-      tipo: req.body.tipo || 'userNormal'
+      tipo: req.body.tipo || 'userNormal',
     });
     // guardar o utilizador na base de dados
     const userCreated = await user.save();
@@ -150,10 +150,12 @@ exports.getAllUsers = async (req, res) => {
         msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
       });
     }
-    
 
     // Obter todos os usuários com atributos selecionados
-    const users = await User.find({}, 'username email morada localidade codigoPostal dataNascimento desafios pontos ecopontosUtilizados ecopontosRegistados medalhas tipo ');
+    const users = await User.find(
+      {},
+      'username email morada localidade codigoPostal dataNascimento desafios pontos ecopontosUtilizados ecopontosRegistados medalhas tipo '
+    );
 
     res.status(200).json({
       success: true,
@@ -198,7 +200,7 @@ exports.getUserById = async (req, res) => {
   }
 };
 
-exports.editProfile = async (req, res) => {
+/* exports.editProfile = async (req, res) => {
   try {
     if (
       !req.body ||
@@ -271,12 +273,71 @@ exports.editProfile = async (req, res) => {
       message: `Algo deu errado. Por favor, tente novamente mais tarde.`,
     });
   }
+}; */
+
+exports.editProfile = async (req, res) => {
+  try {
+    if (
+      !req.body ||
+      !req.body.username ||
+      !req.body.email ||
+      !req.body.password ||
+      !req.body.confirmPassword
+    ) {
+      return res.status(400).send({
+        success: false,
+        msg: 'Todos os campos são obrigatórios!',
+      });
+    }
+
+    // verficar se a password e a confirmação são iguais
+    if (req.body.password !== req.body.confirmPassword) {
+      return res.status(400).send({
+        success: false,
+        msg: 'Password e confirmação não são iguais!',
+      });
+    }
+
+    // atualizar o array do utilizador com os novos dados
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        username: req.body.username,
+        email: req.body.email,
+        password: hashedPassword,
+      },
+      {
+        new: true,
+      }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).send({
+        success: false,
+        msg: `Utilizador com ID ${req.params.id} não encontrado!`,
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      msg: `Dados do utilizador ${updatedUser.username} atualizado com sucesso!`,
+    });
+  } catch (err) {
+    console.error('Error updating profile:', err);
+    res.status(500).json({
+      success: false,
+      msg: 'Algo deu errado.',
+    });
+  }
 };
 
 // tabela de classificação dos utilizadores(tipo:userNormal) por pontos (top 10) - parametros da tabela: classificação, username, pontos
 exports.getTop10 = async (req, res) => {
   try {
-    const users = await User.find({tipo: 'userNormal'}, 'classificacao username pontos').sort({ pontos: -1 }).limit(10);
+    const users = await User.find({ tipo: 'userNormal' }, 'classificacao username pontos')
+      .sort({ pontos: -1 })
+      .limit(10);
 
     let classificacao = 1;
     for (let i = 0; i < users.length; i++) {
@@ -325,4 +386,4 @@ exports.deleteUser = async (req, res) => {
       msg: err.message || `Algo deu errado. Por favor, tente novamente mais tarde.`,
     });
   }
-}
+};

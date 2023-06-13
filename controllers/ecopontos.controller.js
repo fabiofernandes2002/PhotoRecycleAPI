@@ -111,7 +111,7 @@ exports.findOne = async (req, res) => {
         msg: `Não foi possível encontrar o ecoponto como o ID: ${req.params.ecopointID}.`,
       });
     res.status(200).json({
-      success: false,
+      success: true,
       ecoponto: ecopoint,
     });
   } catch (err) {
