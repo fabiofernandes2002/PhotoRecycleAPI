@@ -84,12 +84,12 @@ exports.findAllRegistoUtilizacoes = async (req, res) => {
                 msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
             });
         }
-        const data = await RegistoUtilizacao.find(condition).
+        const registoUtilizacao = await RegistoUtilizacao.find(condition).
         select('idUtilizador idEcoponto dataUtilizacao foto validacao').
         exec();
         res.status(200).json({
             success: true,
-            registoUtilizacoes: data
+            registoUtilizacoes: registoUtilizacao,
         });
     } catch (err) {
         res.status(500).json({
