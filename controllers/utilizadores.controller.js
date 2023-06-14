@@ -284,18 +284,13 @@ exports.deleteUser = async (req, res) => {
 
 exports.getUser = async (req, res) => {
   try {
-    if (req.loggedUserId !== req.params.id && req.loggedUserType)
-      return res.status(401).json({
-        success: false,
-        msg: 'Não tenho premissão para ver este utilizador.',
-      });
-    let user = await User.findById(req.params.id, '-password');
-    if (!user)
+    const user = await User.findById(req.loggedUserId);
+    if (!user) {
       return res.status(404).json({
         success: false,
-        msg: 'Utilizador não encontrado',
+        msg: `Utilizador com ID ${req.loggedUserId} não encontrado!`,
       });
-
+    }
     res.status(200).json({
       success: true,
       user: user,
@@ -303,7 +298,7 @@ exports.getUser = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      msg: err.message || 'Algo correu mal, tente novamente mais tarde.',
+      msg: err.message || `Algo deu errado. Por favor, tente novamente mais tarde.`,
     });
   }
 };
