@@ -318,15 +318,15 @@ exports.getUser = async (req, res) => {
     if (req.loggedUserId !== req.params.id && req.loggedUserType)
       return res.status(403).json({
         success: false,
-        msg: "Não tenho premissão para ver este utilizador.",
+        msg: 'Não tenho premissão para ver este utilizador.',
       });
     let user = await User.findById(req.params.id);
     if (!user)
       return res.status(404).json({
         success: false,
-        msg: "Utilizador não encontrado",
+        msg: 'Utilizador não encontrado',
       });
-  
+
     res.status(200).json({
       success: true,
       user: user,
@@ -334,7 +334,7 @@ exports.getUser = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      msg: err.message || "Algo correu mal, tente novamente mais tarde.",
+      msg: err.message || 'Algo correu mal, tente novamente mais tarde.',
     });
   }
 };

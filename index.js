@@ -13,11 +13,10 @@ app.get('/', function (req, res) {
   });
 });
 
-
 // routing middleware for resource PHOTORECYCLE API
-app.use('/desafios', require('./routes/desafios.routes.js'))
-app.use('/utilizacoes', require('./routes/utilizacoes.routes.js'))
-app.use('/medalhas', require('./routes/medalhas.routes.js'))
+app.use('/desafios', require('./routes/desafios.routes.js'));
+app.use('/utilizacoes', require('./routes/utilizacoes.routes.js'));
+app.use('/medalhas', require('./routes/medalhas.routes.js'));
 app.use('/users', require('./routes/utilizadores.routes.js'));
 app.use('/ecopontos', require('./routes/ecopontos.routes.js'));
 
@@ -27,4 +26,9 @@ app.get('*', function (req, res) {
     message: 'WHAT???',
   });
 });
-app.listen(port, host, () => console.log(`App listening at http://${host}:${port}/`));
+
+const server = app.listen(port, host, () =>
+  console.log(`App listening at http://${host}:${port}/`)
+);
+
+module.exports = { app, server };

@@ -83,7 +83,7 @@ exports.createUtilizacao = async (req, res) => {
                 msg: `Não foi possível encontrar o ecoponto com o ID: ${ecopointID}.`,
             });
         }
-        res.status(200).json({
+        res.status(201).json({
             success: true,
             ecoponto: utilizacao,
             /* falta adicionar a utilização do ecoponto pelo utilizador */
