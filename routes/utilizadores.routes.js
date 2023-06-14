@@ -23,7 +23,7 @@ router.route('/top10').get(authController.verifyToken, utilizadoresController.ge
 router.route('/login').post(utilizadoresController.login);
 
 router
-  .route('/:id')
+  .route('/:id/profile')
   .get(authController.verifyToken, utilizadoresController.getUserById)
   .patch(authController.verifyToken, utilizadoresController.editProfile)
   .delete(authController.verifyToken, utilizadoresController.deleteUser);
