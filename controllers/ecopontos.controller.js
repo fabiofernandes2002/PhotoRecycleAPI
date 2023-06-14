@@ -15,7 +15,9 @@ cloudinary.config({
 exports.findAll = async (req, res) => {
   const tipo = req.query.tipo;
 
-  const condition = tipo ? { tipo: new RegExp(tipo, 'i') } : {};
+  const condition = tipo ? {
+    tipo: new RegExp(tipo, 'i')
+  } : {};
   try {
     // find function parameters: filter, projection (select) / returns a list of documents
     let ecopontos = await Ecopoint.find(condition)
@@ -23,7 +25,10 @@ exports.findAll = async (req, res) => {
         'nome criador localizacao morada dataCriacao foto tipo latitude longitude validacao'
       ) // select the fields: do not show versionKey field
       .exec(); // execute the query
-    res.status(200).json({ success: true, ecopontos: ecopontos });
+    res.status(200).json({
+      success: true,
+      ecopontos: ecopontos
+    });
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -58,22 +63,27 @@ exports.findOne = async (req, res) => {
 exports.validateEcopoint = async (req, res) => {
   if (req.loggedUserType != 'admin') {
     return res.status(403).json({
-        success: false,
-        msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
+      success: false,
+      msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
     });
   }
 
   try {
-    const ecopoint = await Ecopoint.findByIdAndUpdate(req.params.ecopointID, { validacao: true }, { new: true, useFindAndModify: false });
+    const ecopoint = await Ecopoint.findByIdAndUpdate(req.params.ecopointID, {
+      validacao: true
+    }, {
+      new: true,
+      useFindAndModify: false
+    });
     if (!ecopoint) {
-        return res.status(404).json({
-            success: false,
-            msg: `Não foi possível encontrar o ecoponto com o ID: ${req.params.ecopointID}.`,
-        });
+      return res.status(404).json({
+        success: false,
+        msg: `Não foi possível encontrar o ecoponto com o ID: ${req.params.ecopointID}.`,
+      });
     }
     res.status(200).json({
-        success: true,
-        msg: `O ecoponto com o ID: ${req.params.ecopointID} foi validado com sucesso!`,
+      success: true,
+      msg: `O ecoponto com o ID: ${req.params.ecopointID} foi validado com sucesso!`,
     });
 
     // atribuir pontos ao utilizador
@@ -88,8 +98,8 @@ exports.validateEcopoint = async (req, res) => {
 
   } catch (err) {
     res.status(500).json({
-        success: false,
-        msg: err.message || 'Algo deu errado. Por favor, tente novamente mais tarde.',
+      success: false,
+      msg: err.message || 'Algo deu errado. Por favor, tente novamente mais tarde.',
     });
   }
 };
@@ -107,7 +117,7 @@ exports.useEcopoint = async (req, res) => {
         folder: 'utilizacoes',
         crop: 'scale',
       })
-    }else{
+    } else {
       return res.status(400).json({
         success: false,
         msg: "Coloque uma foto.",
@@ -116,7 +126,7 @@ exports.useEcopoint = async (req, res) => {
 
     // usar registo de utilização para guardar o idUtilizador, idEcoponto, dataUtilizacao, foto, validacao
     const registoUtilizacao = new RegistoUtilizacao({
-      idUtilizador: req.loggedUserID,
+      idUtilizador: req.loggedUserId,
       idEcoponto: ecopointID,
       dataUtilizacao: Date.now(),
       foto: image_utilizacao.secure_url,
@@ -138,7 +148,7 @@ exports.useEcopoint = async (req, res) => {
       /* falta adicionar a utilização do ecoponto pelo utilizador */
       msg: `O ecoponto com o ID: ${ecopointID} foi utilizado com sucesso.`,
     });
- 
+
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -149,69 +159,93 @@ exports.useEcopoint = async (req, res) => {
 
 // Registar um novo ecoponto
 exports.createAdicaoEcoponto = async (req, res) => {
-  const validacao = User.tipo === "admin" ? true : false;
+  //const validacao = User.tipo === "admin" ? true : false;
+  try {
 
-  let ecoponto_image = null;
-  if (req.file) {
-    ecoponto_image = await cloudinary.uploader.upload(req.file.path, {
-      folder: "Ecopontos",
-      crop: "scale",
-    });
-  } else{
-    return res.status(400).json({
-      success: false,
-      msg: "Coloque uma foto.",
-    });
-  }
-  
+    let ecopontos = await Ecopoint.findOne({ morada: req.body.morada });
+    if (ecopontos) {
+      return res.status(400).json({
+        success: false,
+        msg: "Já existe um ecoponto com esta morada.",
+      });
+    }
 
-  const adicaoEcoponto = new Ecopoint({
+    // todos os campos são obrigatórios
+    if (!req.body.nome && 
+      !req.body.morada && 
+      !req.body.localizacao &&
+      !req.body.codigoPostal &&
+      !req.body.latitude &&
+      !req.body.longitude &&
+      !req.body.tipo) {
+      return res.status(400).json({
+        success: false,
+        msg: 'Todos os campos são obrigatórios.',
+      });
+    }
+
+
+    let ecoponto_image = null;
+    if (req.file) {
+      ecoponto_image = await cloudinary.uploader.upload(req.file.path, {
+        folder: "Ecopontos",
+        crop: "scale",
+      });
+    } else {
+      return res.status(400).json({
+        success: false,
+        msg: "Coloque uma foto.",
+      });
+    }
+
+
+    const adicaoEcoponto = new Ecopoint({
       criador: req.loggedUserId,
       nome: req.body.nome,
       morada: req.body.morada,
       localizacao: req.body.localizacao,
       codigoPostal: req.body.codigoPostal,
-      dataCriacao: Date.now,
+      dataCriacao: Date.now(),
       foto: ecoponto_image.secure_url,
       latitude: req.body.latitude,
       longitude: req.body.longitude,
       tipo: req.body.tipo,
-      validacao: validacao,
-  });
+      validacao: false,
+    });
 
-  // o valor de criador tem de ser igual ao id do utilizador autenticado
-  if (req.loggedUserId !== req.params.ecopointID) {
+    // o valor de criador tem de ser igual ao id do utilizador autenticado
+    if (req.loggedUserId !== undefined) {
       // passar o id do utilizador autenticado para o id do criador
       adicaoEcoponto.criador = req.loggedUserId;
-  } else {
+    } else {
       return res.status(401).json({
-          success: false,
-          msg: "Tem que estar logado para criar um novo ecoponto."
+        success: false,
+        msg: "Tem que estar logado para criar um novo ecoponto."
       });
-  }
+    }
 
-  try {
-      await adicaoEcoponto.save();
-      res.status(201).json({
-          sucess: true,
-          msg: "Novo registo de adição criado com sucesso!",
-          URL: `/adicaoEcopontos/${adicaoEcoponto._id}`,
-      });
+
+    await adicaoEcoponto.save();
+    res.status(201).json({
+      sucess: true,
+      msg: "Novo registo de adição criado com sucesso!",
+      URL: `/adicaoEcopontos/${adicaoEcoponto._id}`,
+    });
   } catch (err) {
-      if (err.name === 'ValidationError') {
-          let errors = [];
-          Object.keys(err.errors).forEach((key) => {
-              errors.push(err.errors[key].message);
-          });
-          return res.status(400).json({
-              success: false,
-              msgs: errors
-          });
-      }
-      res.status(500).json({
-          success: false,
-          msg: err.message || 'Algo deu errado. Por favor, tente novamente mais tarde. ',
+    if (err.name === 'ValidationError') {
+      let errors = [];
+      Object.keys(err.errors).forEach((key) => {
+        errors.push(err.errors[key].message);
       });
+      return res.status(400).json({
+        success: false,
+        msgs: errors
+      });
+    }
+    res.status(500).json({
+      success: false,
+      msg: err.message || 'Algo deu errado. Por favor, tente novamente mais tarde. ',
+    });
   }
 }
 
@@ -242,4 +276,3 @@ exports.deleteEcopontoById = async (req, res) => {
     });
   }
 };
-

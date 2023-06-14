@@ -11,7 +11,6 @@ module.exports = (mongoose) => {
       },
       dataUtilizacao: {
         type: Date,
-        default: Date.now,
       },
       foto: {
         type: String,
