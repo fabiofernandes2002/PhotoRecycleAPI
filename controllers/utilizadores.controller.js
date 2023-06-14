@@ -313,7 +313,7 @@ exports.deleteUser = async (req, res) => {
   }
 };
 
-exports.getUser = async (req, res) => {
+exports.UserProfile = async (req, res) => {
   const token = req.headers['x-access-token'];
 
   if (!token) {
