@@ -314,18 +314,25 @@ exports.deleteUser = async (req, res) => {
 };
 
 exports.getUser = async (req, res) => {
+  const token = req.headers['x-access-token'];
+
+  if (!token) {
+    return res.status(401).send({
+      success: false,
+      msg: 'Token não encontrado.',
+    });
+  }
+
   try {
-    if (req.loggedUserId !== req.params.id && req.loggedUserType)
-      return res.status(403).json({
+    const decoded = await jwt.verify(token, process.env.SECRET);
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      return res.status(404).send({
         success: false,
-        msg: 'Não tenho premissão para ver este utilizador.',
+        msg: 'Utilizador não encontrado.',
       });
-    let user = await User.findById(req.params.id, '-password');
-    if (!user)
-      return res.status(404).json({
-        success: false,
-        msg: 'Utilizador não encontrado',
-      });
+    }
 
     res.status(200).json({
       success: true,
@@ -334,7 +341,7 @@ exports.getUser = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      msg: err.message || 'Algo correu mal, tente novamente mais tarde.',
+      msg: err.message || `Algo deu errado. Por favor, tente novamente mais tarde.`,
     });
   }
 };
