@@ -200,81 +200,6 @@ exports.getUserById = async (req, res) => {
   }
 };
 
-/* exports.editProfile = async (req, res) => {
-  try {
-    if (
-      !req.body ||
-      !req.body.username ||
-      !req.body.email ||
-      !req.body.password ||
-      !req.body.confirmPassword
-    ) {
-      return res.status(400).send({
-        success: false,
-        msg: 'Todos os campos são obrigatórios!',
-      });
-    }
-
-    // verificar se o username já existe
-    const usernameExist = await User.findOne({
-      username: req.body.username,
-    }).exec();
-    if (usernameExist) {
-      return res.status(400).send({
-        success: false,
-        msg: 'Username já existe!',
-      });
-    }
-    // verificar se o email já existe
-    const emailExist = await User.findOne({
-      email: req.body.email,
-    }).exec();
-    if (emailExist) {
-      return res.status(400).send({
-        success: false,
-        msg: 'Email já existe!',
-      });
-    }
-
-    // verficar se a password e a confirmação são iguais
-    if (req.body.password !== req.body.confirmPassword) {
-      return res.status(400).send({
-        success: false,
-        msg: 'Password e confirmação não são iguais!',
-      });
-    }
-
-    // atualizar o array do utilizador com os novos dados
-    const user = await User.findByIdAndUpdate(
-      req.loggedUserId !== req.params.id,
-      {
-        username: req.body.username,
-        email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 10),
-      },
-      {
-        new: true,
-      }
-    );
-
-    if (!user) {
-      return res.status(404).send({
-        success: false,
-        msg: `Utilizador com ID ${req.params.id} não encontrado!`,
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      msg: `Dados do utilizador ${user.username} atualizado com sucesso!`,
-    });
-  } catch (err) {
-    res.status(500).json({
-      message: `Algo deu errado. Por favor, tente novamente mais tarde.`,
-    });
-  }
-}; */
-
 exports.editProfile = async (req, res) => {
   try {
     if (
@@ -287,29 +212,6 @@ exports.editProfile = async (req, res) => {
       return res.status(400).send({
         success: false,
         msg: 'Todos os campos são obrigatórios!',
-      });
-    }
-
-    // verificar se o username já existe
-    const usernameExist = await User.findOne({
-      username: req.body.username,
-      _id: { $ne: req.params.id }, // Exclude current user from the search
-    }).exec();
-    if (usernameExist) {
-      return res.status(400).send({
-        success: false,
-        msg: 'Username já existe!',
-      });
-    }
-    // verificar se o email já existe
-    const emailExist = await User.findOne({
-      email: req.body.email,
-      _id: { $ne: req.params.id }, // Exclude current user from the search
-    }).exec();
-    if (emailExist) {
-      return res.status(400).send({
-        success: false,
-        msg: 'Email já existe!',
       });
     }
 
@@ -407,6 +309,32 @@ exports.deleteUser = async (req, res) => {
     res.status(500).json({
       success: false,
       msg: err.message || `Algo deu errado. Por favor, tente novamente mais tarde.`,
+    });
+  }
+};
+
+exports.getUser = async (req, res) => {
+  try {
+    if (req.loggedUserId !== req.params.id && req.loggedUserType)
+      return res.status(403).json({
+        success: false,
+        msg: "Não tenho premissão para ver este utilizador.",
+      });
+    let user = await User.findById(req.params.id, "-password");
+    if (!user)
+      return res.status(404).json({
+        success: false,
+        msg: "Utilizador não encontrado",
+      });
+  
+    res.status(200).json({
+      success: true,
+      user: user,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      msg: err.message || "Algo correu mal, tente novamente mais tarde.",
     });
   }
 };
