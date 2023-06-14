@@ -23,12 +23,12 @@ router.route('/top10').get(authController.verifyToken, utilizadoresController.ge
 router.route('/login').post(utilizadoresController.login);
 
 router
-  .route('/:id')
+  .route('/:id/profile')
   .get(authController.verifyToken, utilizadoresController.getUserById)
   .patch(authController.verifyToken, utilizadoresController.editProfile)
   .delete(authController.verifyToken, utilizadoresController.deleteUser);
 
-router.route('/:id/profile').get(authController.verifyToken, utilizadoresController.getUser);
+router.route('/:id').get(authController.verifyToken, utilizadoresController.getUser);
 
 router.all('*', function (req, res) {
   res.status(404).json({ message: 'What???' });
