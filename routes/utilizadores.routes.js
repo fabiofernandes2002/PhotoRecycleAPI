@@ -25,13 +25,12 @@ router.route('/login')
 
 
 router.route('/:id')
-    .get(authController.verifyToken, utilizadoresController.getUserById)
+    //.get(authController.verifyToken, utilizadoresController.getUserById)
     .patch(authController.verifyToken, utilizadoresController.editProfile)
     .delete(authController.verifyToken, utilizadoresController.deleteUser)
 
 router.route('/perfil/:id')
     .get(authController.verifyToken, utilizadoresController.getUser)
-
 
 router.all('*', function (req, res) {
     res.status(404).json({
