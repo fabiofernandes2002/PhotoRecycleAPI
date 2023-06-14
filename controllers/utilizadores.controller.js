@@ -285,7 +285,7 @@ exports.deleteUser = async (req, res) => {
 exports.getUser = async (req, res) => {
   try {
     if (req.loggedUserId !== req.params.id && req.loggedUserType)
-      return res.status(403).json({
+      return res.status(401).json({
         success: false,
         msg: 'Não tenho premissão para ver este utilizador.',
       });
