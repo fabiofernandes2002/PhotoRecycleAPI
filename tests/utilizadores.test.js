@@ -7,6 +7,9 @@ const User = require('../models/utilizadores.model.js');
 
 const database = config.URL;
 
+let token; // Declare a variable to store the token
+let userID; // Declare a variable to store the user ID
+
 beforeAll(async () => {
   await mongoose.connect(database, { useNewUrlParser: true });
 });
@@ -32,7 +35,6 @@ describe('Registar utilizador', () => {
     expect(response.status).toBe(400);
   });
 
-  /* create a test user */
   test('Criar um novo utilizador', async () => {
     const response = await request(app).post('/users').send({
       username: 'userTest',
@@ -121,9 +123,20 @@ describe('Login utilizador', () => {
       password: 'Esmad_2223',
     });
     expect(response.status).toBe(200);
+    token = response.body.token; // Update the token value
+    let decode = jwt.verify(response.body.token, config.SECRET); // Decode the token
+    userID = decode.id; // Get the user ID
   });
-});
 
-describe('Atualizar utilizador', () => {
   test('Todos os campos são obrigatórios', async () => {
+    const response = await request(app).put(`/users/${userID}`).send({
+      username: '',
+      email: '',
+      dataNascimento: '',
+      morada: '',
+      localidade: '',
+      codigoPostal: '',
+    });
+    expect(response.status).toBe(400);
+  });
 });
