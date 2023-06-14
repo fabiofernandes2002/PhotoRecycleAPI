@@ -22,6 +22,8 @@ router.route('/top10')
 router.route('/login')
     .post(utilizadoresController.login)
 
+
+
 router.route('/:id')
     .get(authController.verifyToken, utilizadoresController.getUserById)
     .patch(authController.verifyToken, utilizadoresController.editProfile)
@@ -32,7 +34,9 @@ router.route('/perfil/:id')
 
 
 router.all('*', function (req, res) {
-    res.status(404).json({ message: 'What???' });
+    res.status(404).json({
+        message: 'USERS: What???'
+    });
 })
 
 module.exports = router;
