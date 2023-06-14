@@ -9,6 +9,7 @@ const database = config.URL;
 
 let token; // Declare a variable to store the token
 let userID; // Declare a variable to store the user ID
+let testID; // Declare a variable to store the test ID
 
 beforeAll(async () => {
   await mongoose.connect(database, { useNewUrlParser: true });
@@ -46,6 +47,7 @@ describe('Registar utilizador', () => {
       localidade: 'Vila Nova de Gaia',
       codigoPostal: '4400-182',
     });
+    testID = response.body._id;
     expect(response.status).toBe(201);
   }, 10000);
 
@@ -126,17 +128,25 @@ describe('Login utilizador', () => {
     token = response.body.token; // Update the token value
     let decode = jwt.verify(response.body.token, config.SECRET); // Decode the token
     userID = decode.id; // Get the user ID
+    return userID;
   });
-
+});
+describe('Atualizar utilizador', () => {
   test('Todos os campos são obrigatórios', async () => {
-    const response = await request(app).put(`/users/${userID}`).send({
-      username: '',
-      email: '',
-      dataNascimento: '',
-      morada: '',
-      localidade: '',
-      codigoPostal: '',
-    });
+    const response = await request(app)
+      .patch(`/users/${userID}`)
+      .set('Authorization', 'Bearer ' + token)
+      .send({
+        username: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+      });
+    console.log(response);
     expect(response.status).toBe(400);
   });
+});
+
+afterAll(async () => {
+  await User.findByIdAndDelete(testID);
 });
