@@ -315,12 +315,12 @@ exports.deleteUser = async (req, res) => {
 
 exports.getUser = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.loggedUserId);
 
     if (!user) {
       return res.status(404).json({
         success: false,
-        msg: `Utilizador com ID ${req.params.id} não encontrado!`,
+        msg: `Utilizador com ID ${req.loggedUserId} não encontrado!`,
       });
     }
 
