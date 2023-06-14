@@ -320,7 +320,7 @@ exports.getUser = async (req, res) => {
         success: false,
         msg: "Não tenho premissão para ver este utilizador.",
       });
-    let user = await User.findById(req.params.id, "-password");
+    let user = await User.findById(req.params.id);
     if (!user)
       return res.status(404).json({
         success: false,
