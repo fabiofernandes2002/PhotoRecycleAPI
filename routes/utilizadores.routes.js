@@ -28,7 +28,7 @@ router
   .patch(authController.verifyToken, utilizadoresController.editProfile)
   .delete(authController.verifyToken, utilizadoresController.deleteUser);
 
-router.route('/user/:id/profile').get(authController.verifyToken, utilizadoresController.getUser);
+router.route('/profile').get(authController.verifyToken, utilizadoresController.getUser);
 
 router.all('*', function (req, res) {
   res.status(404).json({ message: 'What???' });
