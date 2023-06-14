@@ -107,6 +107,11 @@ exports.useEcopoint = async (req, res) => {
         folder: 'utilizacoes',
         crop: 'scale',
       })
+    }else{
+      return res.status(400).json({
+        success: false,
+        msg: "Coloque uma foto.",
+      });
     }
 
     // usar registo de utilização para guardar o idUtilizador, idEcoponto, dataUtilizacao, foto, validacao

@@ -31,7 +31,7 @@ router.route('/:ecopointID').get(authController.verifyToken, ecopontosController
 
 router.route('/validacao/:ecopointID').put(authController.verifyToken, ecopontosController.validateEcopoint);
 
-router.route('/:id/use').post(multerUpload, authController.verifyToken, ecopontosController.useEcopoint);
+router.route('/use/:id').post(multerUpload, authController.verifyToken, ecopontosController.useEcopoint);
 
 router.route('/adicaoEcoponto').post( multerUpload, authController.verifyToken, ecopontosController.createAdicaoEcoponto)
 

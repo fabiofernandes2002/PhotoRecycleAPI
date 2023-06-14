@@ -169,6 +169,37 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
+exports.getUserById = async (req, res) => {
+  try {
+    if (req.loggedUserId !== req.params.id && req.loggedUserType != 'admin') {
+      return res.status(403).json({
+        success: false,
+        msg: 'Apenas o administrador pode aceder a esta funcionalidade!',
+      });
+    }
+
+    // Buscar o usuário pelo ID com atributos selecionados
+    const user = await User.findById(req.params.id, 'id username email tipo');
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        msg: `Utilizador com ID ${req.params.id} não encontrado!`,
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      user: user,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      msg: err.message || `Algo deu errado. Por favor, tente novamente mais tarde.`,
+    });
+  }
+};
+
 exports.editProfile = async (req, res) => {
   try {
     if (
@@ -284,13 +315,18 @@ exports.deleteUser = async (req, res) => {
 
 exports.getUser = async (req, res) => {
   try {
-    const user = await User.findById(req.loggedUserId);
-    if (!user) {
+    if (req.loggedUserId !== req.params.id && req.loggedUserType)
+      return res.status(403).json({
+        success: false,
+        msg: 'Não tenho premissão para ver este utilizador.',
+      });
+    let user = await User.findById(req.params.id);
+    if (!user)
       return res.status(404).json({
         success: false,
-        msg: `Utilizador com ID ${req.loggedUserId} não encontrado!`,
+        msg: 'Utilizador não encontrado',
       });
-    }
+
     res.status(200).json({
       success: true,
       user: user,
@@ -298,7 +334,7 @@ exports.getUser = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      msg: err.message || `Algo deu errado. Por favor, tente novamente mais tarde.`,
+      msg: err.message || 'Algo correu mal, tente novamente mais tarde.',
     });
   }
 };
