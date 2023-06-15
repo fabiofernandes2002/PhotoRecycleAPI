@@ -3,7 +3,6 @@ const request = require('supertest');
 const { app, server } = require('../index');
 const jwt = require('jsonwebtoken');
 const config = require('../config/db.config.js');
-const { getAllUsers } = require('../controllers/utilizadores.controller');
 
 const database = config.URL;
 
