@@ -96,6 +96,16 @@ describe('Registar utilizador', () => {
     });
     expect(response.status).toBe(400);
   });
+
+  test('Password não cumpre os requisitos', async () => {
+    const response = await request(app).post('/users').send({
+      username: 'userTest4',
+      password: '',
+      confirmPassword: '',
+      email: 'usertest4@gmail.com',
+    });
+    expect(response.status).toBe(400);
+  });
 });
 
 describe('Login utilizador', () => {
@@ -179,6 +189,19 @@ describe('Atualizar utilizador', () => {
     expect(response.status).toBe(404);
   });
 
+  test('Password e confirmPassword não são iguais', async () => {
+    const response = await request(app)
+      .patch(`/users/${userID}`)
+      .set('Authorization', 'Bearer ' + token)
+      .send({
+        username: 'userTestUpdate',
+        email: 'userTest@gmail.com',
+        password: 'Esmad_2223',
+        confirmPassword: 'Esmad_2224',
+      });
+    expect(response.status).toBe(400);
+  });
+
   test('Atualizar utilizador com sucesso', async () => {
     const response = await request(app)
       .patch(`/users/${userID}`)
@@ -189,6 +212,13 @@ describe('Atualizar utilizador', () => {
         password: 'Esmad_2223',
         confirmPassword: 'Esmad_2223',
       });
+    expect(response.status).toBe(200);
+  });
+
+  test('Listar top 10 utilizadores', async () => {
+    const response = await request(app)
+      .get('/users/top10')
+      .set('Authorization', 'Bearer ' + token);
     expect(response.status).toBe(200);
   });
 });
@@ -226,5 +256,12 @@ describe('Funções de administrador', () => {
       .delete(`/users/${userID}`)
       .set('Authorization', 'Bearer ' + adminToken);
     expect(response.status).toBe(200);
+  });
+
+  test('Sem permissão para apagar utilizador', async () => {
+    const response = await request(app)
+      .delete(`/users/${adminID}`)
+      .set('Authorization', 'Bearer ' + token);
+    expect(response.status).toBe(403);
   });
 });

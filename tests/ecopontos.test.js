@@ -62,6 +62,14 @@ describe('Listagem de ecopontos', () => {
 
     expect(response.status).toBe(404);
   });
+  /* test for error 500 */
+  test('Listar ecoponto com ID inválido', async () => {
+    const response = await request(app)
+      .get(`/ecopontos/5f9e1b3c6c6b4c2a3c6b4c2`)
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(response.status).toBe(500);
+  });
 });
 
 describe('Criação de Ecopontos', () => {
@@ -119,5 +127,38 @@ describe('Funções de Administrador para os Ecopontos', () => {
       });
 
     expect(response.status).toBe(200);
+  });
+
+  test('Validar um ecoponto com ID inválido', async () => {
+    const response = await request(app)
+      .put(`/ecopontos/validacao/648a1dd09c24a59da6abd38`)
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({
+        validacao: true,
+      });
+
+    expect(response.status).toBe(500);
+  });
+
+  test('Validar como userNormal', async () => {
+    const response = await request(app)
+      .put(`/ecopontos/validacao/648a1dd09c24a59da6abd38a`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        validacao: true,
+      });
+
+    expect(response.status).toBe(403);
+  });
+
+  test('Validar um ecoponto com ID inválido', async () => {
+    const response = await request(app)
+      .put(`/ecopontos/validacao/648a1dd09c24a59da6abd38`)
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({
+        validacao: true,
+      });
+
+    expect(response.status).toBe(500);
   });
 });

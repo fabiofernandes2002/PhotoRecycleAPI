@@ -104,6 +104,18 @@ describe('Funções de Administrador', () => {
     expect(response.statusCode).toBe(403);
   });
 
+  test('Tentar atualizar um desafio como userNormal', async () => {
+    const response = await request(app)
+      .put(`/desafios/${desafioID}`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        nome: 'Desafio Teste Normal',
+        descricao: 'Descrição do desafio teste normal',
+        recompensa: 200,
+      });
+    expect(response.statusCode).toBe(403);
+  });
+
   test('Atualizar um desafio de forma errada', async () => {
     const response = await request(app)
       .put(`/desafios/${desafioID}`)
@@ -116,6 +128,18 @@ describe('Funções de Administrador', () => {
     expect(response.statusCode).toBe(400);
   });
 
+  test('Atualizar um desafio com ID inválido', async () => {
+    const response = await request(app)
+      .put('/desafios/5f9e1b3c6c6b4c2a3c6b4c2a')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({
+        nome: 'Desafio Teste Atualizado',
+        descricao: 'Descrição do desafio teste',
+        recompensa: 100,
+      });
+    expect(response.statusCode).toBe(404);
+  });
+
   test('Atualizar um desafio de forma correta', async () => {
     const response = await request(app)
       .put(`/desafios/${desafioID}`)
@@ -126,6 +150,20 @@ describe('Funções de Administrador', () => {
         recompensa: 100,
       });
     expect(response.statusCode).toBe(200);
+  });
+
+  test('Tentar eliminar um desafio como userNormal', async () => {
+    const response = await request(app)
+      .delete(`/desafios/${desafioID}`)
+      .set('Authorization', `Bearer ${token}`);
+    expect(response.statusCode).toBe(403);
+  });
+
+  test('Eliminar um desafio com ID inválido', async () => {
+    const response = await request(app)
+      .delete('/desafios/5f9e1b3c6c6b4c2a3c6b4c2a')
+      .set('Authorization', `Bearer ${adminToken}`);
+    expect(response.statusCode).toBe(404);
   });
 
   test('Eliminar um desafio', async () => {
