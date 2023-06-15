@@ -3,19 +3,25 @@ const request = require('supertest');
 const { app, server } = require('../index');
 const jwt = require('jsonwebtoken');
 const config = require('../config/db.config.js');
-const User = require('../models/utilizadores.model.js');
+const { getAllUsers } = require('../controllers/utilizadores.controller');
 
 const database = config.URL;
 
 let token; // Declare a variable to store the token
 let userID; // Declare a variable to store the user ID
-let testID; // Declare a variable to store the test ID
+let adminToken; // Declare a variable to store the admin token
+let adminID; // Declare a variable to store the admin ID
 
 beforeAll(async () => {
   await mongoose.connect(database, { useNewUrlParser: true });
 });
 
 afterAll(async () => {
+  // Delete the userTest user
+  if (userID != null) {
+    await request(app).delete(`/users/${userID}`).set('Authorization', `Bearer ${token}`);
+  }
+  // Disconnect from the database and close the server
   await mongoose.disconnect();
   server.close();
 });
@@ -47,7 +53,6 @@ describe('Registar utilizador', () => {
       localidade: 'Vila Nova de Gaia',
       codigoPostal: '4400-182',
     });
-    testID = response.body._id;
     expect(response.status).toBe(201);
   }, 10000);
 
@@ -131,6 +136,23 @@ describe('Login utilizador', () => {
     return userID;
   });
 });
+
+describe('Perfil de Utilzador', () => {
+  test('Ver perfil de utilizador', async () => {
+    const response = await request(app)
+      .get(`/users/perfil/${userID}`)
+      .set('Authorization', 'Bearer ' + token);
+    expect(response.status).toBe(200);
+  });
+
+  test('Sem permissão para ver perfil de utilizador', async () => {
+    const response = await request(app)
+      .get(`/users/perfil/5f9e1b3c6c6b4c2a3c6b4c2a`)
+      .set('Authorization', 'Bearer ' + token);
+    expect(response.status).toBe(403);
+  });
+});
+
 describe('Atualizar utilizador', () => {
   test('Todos os campos são obrigatórios', async () => {
     const response = await request(app)
@@ -142,11 +164,68 @@ describe('Atualizar utilizador', () => {
         password: '',
         confirmPassword: '',
       });
-    console.log(response);
     expect(response.status).toBe(400);
+  });
+
+  test('ID de utilizador não existe', async () => {
+    const response = await request(app)
+      .patch(`/users/5f9e1b3c6c6b4c2a3c6b4c2a`)
+      .set('Authorization', 'Bearer ' + token)
+      .send({
+        username: 'userTestUpdate',
+        email: 'userTest@gmail.com',
+        password: 'Esmad_2223',
+        confirmPassword: 'Esmad_2223',
+      });
+    expect(response.status).toBe(404);
+  });
+
+  test('Atualizar utilizador com sucesso', async () => {
+    const response = await request(app)
+      .patch(`/users/${userID}`)
+      .set('Authorization', 'Bearer ' + token)
+      .send({
+        username: 'userTestUpdate',
+        email: 'userTest@gmail.com',
+        password: 'Esmad_2223',
+        confirmPassword: 'Esmad_2223',
+      });
+    expect(response.status).toBe(200);
   });
 });
 
-afterAll(async () => {
-  await User.findByIdAndDelete(testID);
+describe('Funções de administrador', () => {
+  test('Login com sucesso', async () => {
+    const response = await request(app).post('/users/login').send({
+      email: 'admin@gmail.com',
+      password: 'Esmad_2223',
+    });
+    expect(response.status).toBe(200);
+    adminToken = response.body.token; // Update the token value
+    let decode = jwt.verify(response.body.token, config.SECRET); // Decode the token
+    adminID = decode.id; // Get the user ID
+    console.log(response.body);
+  });
+
+  test('Listar todos os utilizadores', async () => {
+    const response = await request(app)
+      .get('/users')
+      .set('Authorization', 'Bearer ' + adminToken);
+    expect(response.status).toBe(200);
+  });
+
+  test('Sem permissão para listar todos os utilizadores', async () => {
+    const response = await request(app)
+      .get('/users')
+      .set('Authorization', 'Bearer ' + token);
+    expect(response.status).toBe(403);
+    console.log(response.body);
+  });
+
+  test('Apagar Utilizador', async () => {
+    const response = await request(app)
+      .delete(`/users/${userID}`)
+      .set('Authorization', 'Bearer ' + adminToken);
+    expect(response.status).toBe(200);
+  });
 });
