@@ -89,12 +89,10 @@ exports.validateEcopoint = async (req, res) => {
     // atribuir pontos ao utilizador
     const utilizador = await User.findById(ecopoint.criador).exec();
     utilizador.pontos += 50;
+    // contar numero de ecopontosRegistados
+    utilizador.ecopontosRegistados += 1;
     // guardar o utilizador na base de dados
     await utilizador.save();
-    res.status(200).json({
-      success: true,
-      msg: `Foram atribuídos 10 pontos ao utilizador com o ID: ${ecopoint.criador}.`,
-    });
 
   } catch (err) {
     res.status(500).json({
@@ -107,6 +105,7 @@ exports.validateEcopoint = async (req, res) => {
 // Function to use the Ecopoint model
 exports.useEcopoint = async (req, res) => {
   try {
+    console.log(req.body)
     const ecopointID = req.params.id;
 
     const ecopoint = await Ecopoint.findById(ecopointID).exec();
@@ -171,7 +170,7 @@ exports.createAdicaoEcoponto = async (req, res) => {
     }
 
     // todos os campos são obrigatórios
-    if (!req.body.nome && 
+    /* if (!req.body.nome && 
       !req.body.morada && 
       !req.body.localizacao &&
       !req.body.codigoPostal &&
@@ -182,7 +181,7 @@ exports.createAdicaoEcoponto = async (req, res) => {
         success: false,
         msg: 'Todos os campos são obrigatórios.',
       });
-    }
+    } */
 
 
     let ecoponto_image = null;
@@ -197,7 +196,6 @@ exports.createAdicaoEcoponto = async (req, res) => {
         msg: "Coloque uma foto.",
       });
     }
-
 
     const adicaoEcoponto = new Ecopoint({
       criador: req.loggedUserId,
@@ -276,3 +274,23 @@ exports.deleteEcopontoById = async (req, res) => {
     });
   }
 };
+
+// fuuncao que pega a latitude e longitude a partir da morada e do codigo postal
+exports.getLatitudelongitude = async (req, res) => {
+  try {
+    const { morada, codigoPostal } = req.body;
+    const url = `https://nominatim.openstreetmap.org/search?street=${morada}&postalcode=${codigoPostal}&format=json&polygon=1&addressdetails=1`;
+    const response = await axios.get(url);
+    const { lat, lon } = response.data[0];
+    res.status(200).json({
+      success: true,
+      latitude: lat,
+      longitude: lon,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      msg: 'Algo deu errado. Por favor, tente novamente mais tarde.',
+    });
+  }
+}

@@ -239,7 +239,7 @@ exports.validarRegistoUtilizacao = async (req, res) => {
         else
             res.status(200).json({
                 success: true,
-                msg: 'Utilização do ecoponto validada co sucesso!',
+                msg: 'Utilização do ecoponto validada com sucesso!',
                 URL: `/registoUtilizacoes/${idRegistoUtilizacao}`,
             });
 
