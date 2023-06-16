@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "API for PhotoRecycle app.",
   "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,22 +21,15 @@
   },
   "homepage": "https://github.com/LucasSilva194/PhotoRecycleAPI#readme",
   "dependencies": {
-    "axios": "^1.4.0",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.37.1",
     "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
+    "dotenv": "^16.1.4",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
-    "mongoose": "^7.2.4",
-    "mongoose-validator": "^1.3.1",
-    "multer": "^1.4.5-lts.1"
-  },
-  "directories": {
-    "test": "tests"
-  },
-  "devDependencies": {
-    "jest": "^29.5.0",
-    "supertest": "^6.3.3"
+    "mongoose": "^7.3.0",
+    "mongoose-validator": "^2.1.0",
+    "multer": "^1.4.5-lts.1",
+    "node": "^20.2.0"
   }
 }
