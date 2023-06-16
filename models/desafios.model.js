@@ -1,5 +1,6 @@
 module.exports = (mongoose) => {
-  const schema = mongoose.Schema({
+  const schema = mongoose.Schema(
+    {
       nome: {
         type: String,
         required: [true, 'O campo nome é obrigatório!'],
@@ -11,12 +12,12 @@ module.exports = (mongoose) => {
       recompensa: {
         type: String,
         required: [true, 'O campo recompensa é obrigatório!'],
-      }
+      },
     },
     {
       timestamps: true,
     }
   );
-    const Desafio = mongoose.model("desafios", schema);
-    return Desafio;
+  const Desafio = mongoose.model('desafios', schema);
+  return Desafio;
 };
