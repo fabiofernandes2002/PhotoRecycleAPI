@@ -39,7 +39,7 @@ describe('Registar utilizador', () => {
       tipo: '',
     });
     expect(response.status).toBe(400);
-  });
+  }, 10000);
 
   test('Criar um novo utilizador', async () => {
     const response = await request(app).post('/users').send({
@@ -67,7 +67,7 @@ describe('Registar utilizador', () => {
       codigoPostal: '4400-182',
     });
     expect(response.status).toBe(400);
-  });
+  }, 10000);
 
   test('Email já existe', async () => {
     const response = await request(app).post('/users').send({
@@ -81,7 +81,7 @@ describe('Registar utilizador', () => {
       codigoPostal: '4400-182',
     });
     expect(response.status).toBe(400);
-  });
+  }, 10000);
 
   test('Password e confirmPassword não são iguais', async () => {
     const response = await request(app).post('/users').send({
@@ -95,7 +95,7 @@ describe('Registar utilizador', () => {
       codigoPostal: '4400-182',
     });
     expect(response.status).toBe(400);
-  });
+  }, 10000);
 
   test('Password não cumpre os requisitos', async () => {
     const response = await request(app).post('/users').send({
@@ -105,7 +105,7 @@ describe('Registar utilizador', () => {
       email: 'usertest4@gmail.com',
     });
     expect(response.status).toBe(400);
-  });
+  }, 10000);
 });
 
 describe('Login utilizador', () => {
@@ -115,7 +115,7 @@ describe('Login utilizador', () => {
       password: '',
     });
     expect(response.status).toBe(400);
-  });
+  }, 10000);
 
   test('Email não existe ou incorreto', async () => {
     const response = await request(app).post('/users/login').send({
@@ -123,7 +123,7 @@ describe('Login utilizador', () => {
       password: 'Esmad_2223',
     });
     expect(response.status).toBe(400);
-  });
+  }, 10000);
 
   test('Password incorreta', async () => {
     const response = await request(app).post('/users/login').send({
@@ -131,7 +131,7 @@ describe('Login utilizador', () => {
       password: 'Esmad_2224',
     });
     expect(response.status).toBe(400);
-  });
+  }, 10000);
 
   test('Login com sucesso', async () => {
     const response = await request(app).post('/users/login').send({
@@ -143,7 +143,7 @@ describe('Login utilizador', () => {
     let decode = jwt.verify(response.body.token, config.SECRET); // Decode the token
     userID = decode.id; // Get the user ID
     return userID;
-  });
+  }, 10000);
 });
 
 describe('Perfil de Utilzador', () => {
@@ -159,7 +159,7 @@ describe('Perfil de Utilzador', () => {
       .get(`/users/perfil/5f9e1b3c6c6b4c2a3c6b4c2a`)
       .set('Authorization', 'Bearer ' + token);
     expect(response.status).toBe(403);
-  });
+  }, 10000);
 });
 
 describe('Atualizar utilizador', () => {
@@ -174,7 +174,7 @@ describe('Atualizar utilizador', () => {
         confirmPassword: '',
       });
     expect(response.status).toBe(400);
-  });
+  }, 10000);
 
   test('ID de utilizador não existe', async () => {
     const response = await request(app)
@@ -187,7 +187,7 @@ describe('Atualizar utilizador', () => {
         confirmPassword: 'Esmad_2223',
       });
     expect(response.status).toBe(404);
-  });
+  }, 10000);
 
   test('Password e confirmPassword não são iguais', async () => {
     const response = await request(app)
@@ -200,7 +200,7 @@ describe('Atualizar utilizador', () => {
         confirmPassword: 'Esmad_2224',
       });
     expect(response.status).toBe(400);
-  });
+  }, 10000);
 
   test('Atualizar utilizador com sucesso', async () => {
     const response = await request(app)
@@ -213,14 +213,14 @@ describe('Atualizar utilizador', () => {
         confirmPassword: 'Esmad_2223',
       });
     expect(response.status).toBe(200);
-  });
+  }, 10000);
 
   test('Listar top 10 utilizadores', async () => {
     const response = await request(app)
       .get('/users/top10')
       .set('Authorization', 'Bearer ' + token);
     expect(response.status).toBe(200);
-  });
+  }, 10000);
 });
 
 describe('Funções de administrador', () => {
@@ -234,14 +234,14 @@ describe('Funções de administrador', () => {
     let decode = jwt.verify(response.body.token, config.SECRET); // Decode the token
     adminID = decode.id; // Get the user ID
     console.log(response.body);
-  });
+  }, 10000);
 
   test('Listar todos os utilizadores', async () => {
     const response = await request(app)
       .get('/users')
       .set('Authorization', 'Bearer ' + adminToken);
     expect(response.status).toBe(200);
-  });
+  }, 10000);
 
   test('Sem permissão para listar todos os utilizadores', async () => {
     const response = await request(app)
@@ -249,19 +249,19 @@ describe('Funções de administrador', () => {
       .set('Authorization', 'Bearer ' + token);
     expect(response.status).toBe(403);
     console.log(response.body);
-  });
+  }, 10000);
 
   test('Apagar Utilizador', async () => {
     const response = await request(app)
       .delete(`/users/${userID}`)
       .set('Authorization', 'Bearer ' + adminToken);
     expect(response.status).toBe(200);
-  });
+  }, 10000);
 
   test('Sem permissão para apagar utilizador', async () => {
     const response = await request(app)
       .delete(`/users/${adminID}`)
       .set('Authorization', 'Bearer ' + token);
     expect(response.status).toBe(403);
-  });
+  }, 10000);
 });

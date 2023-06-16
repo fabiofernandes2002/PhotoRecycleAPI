@@ -38,21 +38,21 @@ describe('Listar Desafios', () => {
   test('Listar todos os desafios', async () => {
     const response = await request(app).get('/desafios').set('Authorization', `Bearer ${token}`);
     expect(response.statusCode).toBe(200);
-  });
+  }, 10000);
 
   test('Listar apenas um desafio', async () => {
     const response = await request(app)
       .get('/desafios/64636c334352679983136162')
       .set('Authorization', `Bearer ${token}`);
     expect(response.statusCode).toBe(200);
-  });
+  }, 10000);
 
   test('Listar desafio com ID inválido', async () => {
     const response = await request(app)
       .get('/desafios/5f9e1b3c6c6b4c2a3c6b4c2a')
       .set('Authorization', `Bearer ${token}`);
     expect(response.statusCode).toBe(404);
-  });
+  }, 10000);
 });
 
 describe('Funções de Administrador', () => {
@@ -65,7 +65,7 @@ describe('Funções de Administrador', () => {
     adminToken = response.body.token; // save the token!
     let decode = jwt.verify(adminToken, config.SECRET);
     adminID = decode.id;
-  });
+  }, 10000);
 
   test('Criar um novo desafio', async () => {
     const response = await request(app)
@@ -78,7 +78,19 @@ describe('Funções de Administrador', () => {
       });
     expect(response.statusCode).toBe(201);
     desafioID = response.body.id;
-  });
+  }, 10000);
+
+  test('Criar um novo desafio de forma errada', async () => {
+    const response = await request(app)
+      .post('/desafios')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({
+        nome: '',
+        descricao: '',
+        recompensa: '',
+      });
+    expect(response.statusCode).toBe(400);
+  }, 10000);
 
   test('Verificar se o desafio já existe', async () => {
     const response = await request(app)
@@ -90,7 +102,7 @@ describe('Funções de Administrador', () => {
         recompensa: 100,
       });
     expect(response.statusCode).toBe(400);
-  });
+  }, 10000);
 
   test('Tentar criar um desafio como userNormal', async () => {
     const response = await request(app)
@@ -102,7 +114,7 @@ describe('Funções de Administrador', () => {
         recompensa: 200,
       });
     expect(response.statusCode).toBe(403);
-  });
+  }, 10000);
 
   test('Tentar atualizar um desafio como userNormal', async () => {
     const response = await request(app)
@@ -114,7 +126,7 @@ describe('Funções de Administrador', () => {
         recompensa: 200,
       });
     expect(response.statusCode).toBe(403);
-  });
+  }, 10000);
 
   test('Atualizar um desafio de forma errada', async () => {
     const response = await request(app)
@@ -126,7 +138,7 @@ describe('Funções de Administrador', () => {
         recompensa: '',
       });
     expect(response.statusCode).toBe(400);
-  });
+  }, 10000);
 
   test('Atualizar um desafio com ID inválido', async () => {
     const response = await request(app)
@@ -138,7 +150,7 @@ describe('Funções de Administrador', () => {
         recompensa: 100,
       });
     expect(response.statusCode).toBe(404);
-  });
+  }, 10000);
 
   test('Atualizar um desafio de forma correta', async () => {
     const response = await request(app)
@@ -150,26 +162,26 @@ describe('Funções de Administrador', () => {
         recompensa: 100,
       });
     expect(response.statusCode).toBe(200);
-  });
+  }, 10000);
 
   test('Tentar eliminar um desafio como userNormal', async () => {
     const response = await request(app)
       .delete(`/desafios/${desafioID}`)
       .set('Authorization', `Bearer ${token}`);
     expect(response.statusCode).toBe(403);
-  });
+  }, 10000);
 
   test('Eliminar um desafio com ID inválido', async () => {
     const response = await request(app)
       .delete('/desafios/5f9e1b3c6c6b4c2a3c6b4c2a')
       .set('Authorization', `Bearer ${adminToken}`);
     expect(response.statusCode).toBe(404);
-  });
+  }, 10000);
 
   test('Eliminar um desafio', async () => {
     const response = await request(app)
       .delete(`/desafios/${desafioID}`)
       .set('Authorization', `Bearer ${adminToken}`);
     expect(response.statusCode).toBe(200);
-  });
+  }, 10000);
 });

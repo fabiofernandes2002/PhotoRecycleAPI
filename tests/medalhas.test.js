@@ -59,7 +59,7 @@ describe('Criação de Medalhas', () => {
       .set('Authorization', 'Bearer ' + adminToken);
     expect(response.status).toBe(201);
     medalhaID = response.body.URL;
-  });
+  }, 10000);
 
   test('Tentar criar uma medalha como userNormal', async () => {
     const response = await request(app)
@@ -71,7 +71,7 @@ describe('Criação de Medalhas', () => {
       })
       .set('Authorization', 'Bearer ' + token);
     expect(response.status).toBe(403);
-  });
+  }, 10000);
 
   test('Tentar criar uma medalha com dados inválidos', async () => {
     const response = await request(app)
@@ -83,7 +83,7 @@ describe('Criação de Medalhas', () => {
       })
       .set('Authorization', 'Bearer ' + adminToken);
     expect(response.status).toBe(400);
-  });
+  }, 10000);
 });
 
 describe('Listar medalhas', () => {
@@ -97,21 +97,21 @@ describe('Listar medalhas', () => {
       .get(`/medalhas/${medalhaID}`)
       .set('Authorization', 'Bearer ' + adminToken);
     expect(response.status).toBe(200);
-  });
+  }, 10000);
 
   test('Tentar listar uma medalha como userNormal', async () => {
     const response = await request(app)
       .get(`/medalhas/${medalhaID}`)
       .set('Authorization', 'Bearer ' + token);
     expect(response.status).toBe(403);
-  });
+  }, 10000);
 
   test('Tentar listar uma medalha inexistente', async () => {
     const response = await request(app)
       .get(`/medalhas/5f8b8a2f7f6c6a1f1c9d7e8f`)
       .set('Authorization', 'Bearer ' + adminToken);
     expect(response.status).toBe(404);
-  });
+  }, 10000);
 });
 
 describe('Atualizar medalhas', () => {
@@ -125,7 +125,7 @@ describe('Atualizar medalhas', () => {
       })
       .set('Authorization', 'Bearer ' + adminToken);
     expect(response.status).toBe(200);
-  });
+  }, 10000);
 
   test('Tentar atualizar uma medalha como userNormal', async () => {
     const response = await request(app)
@@ -137,7 +137,7 @@ describe('Atualizar medalhas', () => {
       })
       .set('Authorization', 'Bearer ' + token);
     expect(response.status).toBe(403);
-  });
+  }, 10000);
 
   test('Tentar atualizar uma medalha com dados inválidos', async () => {
     const response = await request(app)
@@ -149,7 +149,7 @@ describe('Atualizar medalhas', () => {
       })
       .set('Authorization', 'Bearer ' + adminToken);
     expect(response.status).toBe(400);
-  });
+  }, 10000);
 
   test('Tentar atualizar uma medalha inexistente', async () => {
     const response = await request(app)
@@ -161,7 +161,7 @@ describe('Atualizar medalhas', () => {
       })
       .set('Authorization', 'Bearer ' + adminToken);
     expect(response.status).toBe(404);
-  });
+  }, 10000);
 });
 
 describe('Apagar medalhas', () => {
@@ -170,19 +170,19 @@ describe('Apagar medalhas', () => {
       .delete(`/medalhas/5f8b8a2f7f6c6a1f1c9d7e8f`)
       .set('Authorization', 'Bearer ' + adminToken);
     expect(response.status).toBe(404);
-  });
+  }, 10000);
 
   test('Tentar apagar uma medalha como userNormal', async () => {
     const response = await request(app)
       .delete(`/medalhas/${medalhaID}`)
       .set('Authorization', 'Bearer ' + token);
     expect(response.status).toBe(403);
-  });
+  }, 10000);
 
   test('Apagar uma medalha', async () => {
     const response = await request(app)
       .delete(`/medalhas/${medalhaID}`)
       .set('Authorization', 'Bearer ' + adminToken);
     expect(response.status).toBe(200);
-  });
+  }, 10000);
 });

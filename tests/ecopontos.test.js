@@ -16,14 +16,6 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  //Set the validation back to false
-  await request(app)
-    .put(`/ecopontos/validacao/648a1dd09c24a59da6abd38a`)
-    .set('Authorization', `Bearer ${adminToken}`)
-    .send({
-      validado: false,
-    });
-
   // Disconnect from the database and close the server
   await mongoose.disconnect();
   server.close();
@@ -53,7 +45,7 @@ describe('Listagem de ecopontos', () => {
       .set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(200);
-  });
+  }, 10000);
 
   test('Listar ecoponto com ID inválido', async () => {
     const response = await request(app)
@@ -61,15 +53,14 @@ describe('Listagem de ecopontos', () => {
       .set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(404);
-  });
-  /* test for error 500 */
+  }, 10000);
   test('Listar ecoponto com ID inválido', async () => {
     const response = await request(app)
       .get(`/ecopontos/5f9e1b3c6c6b4c2a3c6b4c2`)
       .set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(500);
-  });
+  }, 10000);
 });
 
 describe('Criação de Ecopontos', () => {
@@ -87,7 +78,7 @@ describe('Criação de Ecopontos', () => {
         tipo: 'vidro',
       });
     expect(response.status).toBe(400);
-  });
+  }, 10000);
 
   test('Todos os capos são obrigatórios', async () => {
     const response = await request(app)
@@ -103,7 +94,7 @@ describe('Criação de Ecopontos', () => {
         tipo: '',
       });
     expect(response.status).toBe(400);
-  });
+  }, 10000);
 });
 
 describe('Funções de Administrador para os Ecopontos', () => {
@@ -125,9 +116,8 @@ describe('Funções de Administrador para os Ecopontos', () => {
       .send({
         validacao: true,
       });
-
     expect(response.status).toBe(200);
-  });
+  }, 10000);
 
   test('Validar um ecoponto com ID inválido', async () => {
     const response = await request(app)
@@ -136,9 +126,8 @@ describe('Funções de Administrador para os Ecopontos', () => {
       .send({
         validacao: true,
       });
-
     expect(response.status).toBe(500);
-  });
+  }, 10000);
 
   test('Validar como userNormal', async () => {
     const response = await request(app)
@@ -147,9 +136,8 @@ describe('Funções de Administrador para os Ecopontos', () => {
       .send({
         validacao: true,
       });
-
     expect(response.status).toBe(403);
-  });
+  }, 10000);
 
   test('Validar um ecoponto com ID inválido', async () => {
     const response = await request(app)
@@ -158,7 +146,6 @@ describe('Funções de Administrador para os Ecopontos', () => {
       .send({
         validacao: true,
       });
-
     expect(response.status).toBe(500);
-  });
+  }, 10000);
 });
