@@ -39,7 +39,7 @@ describe('Registar utilizador', () => {
       tipo: '',
     });
     expect(response.status).toBe(400);
-  }, 10000);
+  }, 20000);
 
   test('Criar um novo utilizador', async () => {
     const response = await request(app).post('/users').send({

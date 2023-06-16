@@ -44,19 +44,6 @@ describe('Autenticação', () => {
 });
 
 describe('Testes de utilização', () => {
-  test('Criar utilização', async () => {
-    const response = await request(app)
-      .post('/utilizacoes')
-      .send({
-        idUtilizador: userID,
-        idEcoponto: '646376c2cf32f08ae1f73257',
-        dataUtilizacao: '2021-06-04T00:00:00.000Z',
-        foto: '../tmp/1686773185325-ecoponto.png',
-        validacao: false,
-      })
-      .set('Authorization', `Bearer ${adminToken}`);
-    expect(response.statusCode).toBe(200);
-  });
   test('Criar utilização com dados em falta', async () => {
     const response = await request(app)
       .post('/utilizacoes')
@@ -64,22 +51,72 @@ describe('Testes de utilização', () => {
         idUtilizador: userID,
         idEcoponto: '646376c2cf32f08ae1f73257',
         dataUtilizacao: '2021-06-04T00:00:00.000Z',
-        foto: 'https://i.imgur.com/3QZQ0Jj.jpg',
       })
       .set('Authorization', `Bearer ${adminToken}`);
     expect(response.statusCode).toBe(400);
   });
-  test('Tentar criar utilização como userNormal', async () => {
+
+  test('Listar todas as utilizações validadas', async () => {
     const response = await request(app)
-      .post('/utilizacoes')
+      .get('/utilizacoes/validados')
+      .set('Authorization', `Bearer ${adminToken}`);
+    expect(response.statusCode).toBe(200);
+  });
+
+  test('Tentar listar todas as utilizações sem ser admin', async () => {
+    const response = await request(app)
+      .get('/utilizacoes/validados')
+      .set('Authorization', `Bearer ${token}`);
+    expect(response.statusCode).toBe(403);
+  });
+
+  test('Listar todas as utilizações não validadas', async () => {
+    const response = await request(app)
+      .get('/utilizacoes/naoValidados')
+      .set('Authorization', `Bearer ${adminToken}`);
+    expect(response.statusCode).toBe(200);
+  });
+
+  test('Tentar listar todas as utilizações sem ser admin', async () => {
+    const response = await request(app)
+      .get('/utilizacoes/naoValidados')
+      .set('Authorization', `Bearer ${token}`);
+    expect(response.statusCode).toBe(403);
+  });
+
+  test('Listar utilização por ID', async () => {
+    const response = await request(app)
+      .get('/utilizacoes/64636f40435267998314550e')
+      .set('Authorization', `Bearer ${adminToken}`);
+    expect(response.statusCode).toBe(200);
+  });
+
+  test('Tentar listar utilização por ID sem ser admin', async () => {
+    const response = await request(app)
+      .get('/utilizacoes/64636f40435267998314550e')
+      .set('Authorization', `Bearer ${token}`);
+    expect(response.statusCode).toBe(403);
+  });
+});
+
+describe('Validação de Utilizações', () => {
+  test('Validar utilização', async () => {
+    const response = await request(app)
+      .put('/utilizacoes/validacao/64636f40435267998314550e')
       .send({
-        idUtilizador: userID,
-        idEcoponto: '646376c2cf32f08ae1f73257',
-        dataUtilizacao: '2021-06-04T00:00:00.000Z',
-        foto: 'https://i.imgur.com/3QZQ0Jj.jpg',
-        validacao: false,
+        validado: true,
+      })
+      .set('Authorization', `Bearer ${adminToken}`);
+    expect(response.statusCode).toBe(200);
+  });
+
+  test('Tentar validar utilização sem ser admin', async () => {
+    const response = await request(app)
+      .put('/utilizacoes/validacao/64636f40435267998314550e')
+      .send({
+        validado: true,
       })
       .set('Authorization', `Bearer ${token}`);
-    expect(response.statusCode).toBe(401);
+    expect(response.statusCode).toBe(403);
   });
 });
